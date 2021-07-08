@@ -24,4 +24,6 @@ public class Baithi {
     @JoinColumn(name = "MaSinhVien",nullable = false)
     private Sinhvien MaSinhVien;
 
+    private Integer Diem;
+
 }

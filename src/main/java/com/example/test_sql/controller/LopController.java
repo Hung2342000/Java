@@ -35,13 +35,13 @@ public class LopController {
     }
 
     @PutMapping("/{malop}")
-    public String post(@RequestBody LopDTO lopDTO,@PathVariable String malop){
+    public String post(@RequestBody LopDTO lopDTO,@PathVariable("malop") String malop){
         lopService.put(lopDTO,malop);
         return "Cập nhật thành công";
     }
 
     @DeleteMapping("/{malop}")
-    public String delete(@PathVariable String malop){
+    public String delete(@PathVariable("malop") String malop){
         lopService.delete(malop);
         return "Xóa thành công";
     }

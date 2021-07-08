@@ -1,5 +1,6 @@
 package com.example.test_sql.controller;
 
+import com.example.test_sql.dto.MonHocDTO;
 import com.example.test_sql.model.Monhoc;
 import com.example.test_sql.service.KhoaService;
 import com.example.test_sql.service.MonHocService;
@@ -15,25 +16,25 @@ public class MonHocControlller {
     public MonHocService monHocService = new MonHocService();
 
     @GetMapping("")
-    public List<Monhoc> getList(){
-        List<Monhoc> monhocList = monHocService.getList();
+    public List<MonHocDTO> getList(){
+        List<MonHocDTO> monhocList = monHocService.getList();
         return monhocList;
     }
 
     @GetMapping("/{mamonhoc}")
-    public Monhoc get(@PathVariable("mamonhoc") String ma){
-        Monhoc monhoc = monHocService.get(ma);
+    public MonHocDTO get(@PathVariable("mamonhoc") String ma){
+        MonHocDTO monhoc = monHocService.get(ma);
         return monhoc;
     }
 
     @PostMapping("")
-    public String Post(@RequestBody Monhoc monhoc){
+    public String Post(@RequestBody MonHocDTO monhoc){
         monHocService.post(monhoc);
         return "Thêm thành công";
     }
 
     @PutMapping("/{mamonhoc}")
-    public String put(@RequestBody Monhoc monhoc, @PathVariable("mamonhoc") String ma){
+    public String put(@RequestBody MonHocDTO monhoc, @PathVariable("mamonhoc") String ma){
         monHocService.put(monhoc,ma);
         return "Sửa thành công";
     }

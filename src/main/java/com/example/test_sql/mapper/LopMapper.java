@@ -11,7 +11,6 @@ public class LopMapper {
         lop.setMaLop(dto.getMaLop());
         lop.setTenLop(dto.getTenLop());
         return lop;
-
     }
 
     public LopDTO toDTO(Lop lop){
