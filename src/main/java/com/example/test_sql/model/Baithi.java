@@ -14,7 +14,9 @@ import javax.persistence.*;
 
 public class Baithi {
     @Id
-    private String MaBaiThi;
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name = "MaBaiThi")
+    private Long MaBaiThi;
 
     @ManyToOne
     @JoinColumn(name = "MaMonHoc",nullable = false)

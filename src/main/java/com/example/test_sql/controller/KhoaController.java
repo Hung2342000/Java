@@ -4,6 +4,8 @@ import com.example.test_sql.dto.KhoaDTO;
 import com.example.test_sql.model.Khoa;
 import com.example.test_sql.service.KhoaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,18 +22,18 @@ public class KhoaController {
     KhoaService khoaService = new KhoaService();
 
     @RequestMapping(value = "",method = RequestMethod.GET)
-    public List<KhoaDTO> getlist(){
-       List<KhoaDTO> khoaDTOList = khoaService.getlist();
+    public List<KhoaDTO> getlist(@RequestParam Integer page){
+        Pageable pageable = PageRequest.of(page-1,2);
+       List<KhoaDTO> khoaDTOList = khoaService.getlist(pageable);
        return khoaDTOList;
     };
 
     @RequestMapping(value = "",method = RequestMethod.POST)
-    public String Post(@RequestBody KhoaDTO khoaDTO){
+    public KhoaDTO Post(@RequestBody KhoaDTO khoaDTO){
 
         khoaService.Post(khoaDTO);
-        return "Thêm thành công";
+        return khoaDTO;
     };
-
 
     @RequestMapping(value = "/{makhoa}",method = RequestMethod.GET)
     public KhoaDTO get(@PathVariable("makhoa") String makhoa) {
@@ -39,10 +41,10 @@ public class KhoaController {
         return khoaDTOget;
     }
 
-    @RequestMapping(value = "/{makhoa}",method = RequestMethod.PUT)
-    public String Put(@RequestBody KhoaDTO khoaDTO,@PathVariable("makhoa") String makhoa ){
-        khoaService.Put(khoaDTO,makhoa);
-        return "Sửa thành công";
+    @RequestMapping(value = "",method = RequestMethod.PUT)
+    public KhoaDTO Put(@RequestBody KhoaDTO khoaDTO){
+        khoaService.Put(khoaDTO);
+        return khoaDTO;
     };
 
     @RequestMapping(value = "/{makhoa}",method = RequestMethod.DELETE)

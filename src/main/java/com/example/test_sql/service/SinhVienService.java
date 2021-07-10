@@ -2,11 +2,13 @@ package com.example.test_sql.service;
 
 import com.example.test_sql.dto.SinhVienDTO;
 import com.example.test_sql.mapper.SinhVienMapper;
+import com.example.test_sql.model.Baithi;
 import com.example.test_sql.model.Lop;
 import com.example.test_sql.model.Sinhvien;
 import com.example.test_sql.repository.LopRepository;
 import com.example.test_sql.repository.SinhVienRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -24,8 +26,8 @@ public class SinhVienService {
     @Autowired
     SinhVienMapper sinhVienMapper;
 
-    public List<SinhVienDTO> getList(){
-        List<Sinhvien> sinhviens = sinhVienRepository.findAll();
+    public List<SinhVienDTO> getList(Pageable pageable){
+        List<Sinhvien> sinhviens = sinhVienRepository.findAll(pageable).toList();
         List<SinhVienDTO> sinhVienDTOS = new ArrayList<>();
         for (Sinhvien sv: sinhviens) {
             SinhVienDTO sinhVienDTO = sinhVienMapper.toSVDTO(sv);
@@ -45,7 +47,7 @@ public class SinhVienService {
         }
     }
 
-    public void post(SinhVienDTO sinhVienDTO){
+    public SinhVienDTO post(SinhVienDTO sinhVienDTO){
         Optional<Sinhvien> sinhvien = sinhVienRepository.findById(sinhVienDTO.getMaSinhVien());
         if(sinhvien.isPresent()){
             throw new RuntimeException("Đã tồn tại bản ghi");
@@ -56,11 +58,12 @@ public class SinhVienService {
             Sinhvien sinhvienpost = sinhVienMapper.toSV(sinhVienDTO);
             sinhvienpost.setMaLop(lop.get());
             sinhVienRepository.save(sinhvienpost);
+            return  sinhVienDTO;
         }
     }
 
-    public SinhVienDTO put(SinhVienDTO sinhVienDTO, String masinhvien){
-        Optional<Sinhvien> sinhvien = sinhVienRepository.findById(masinhvien);
+    public SinhVienDTO put(SinhVienDTO sinhVienDTO){
+        Optional<Sinhvien> sinhvien = sinhVienRepository.findById(sinhVienDTO.getMaSinhVien());
         if(sinhvien.isPresent()){
             Optional<Lop> lop = lopRepository.findById(sinhVienDTO.getMaLop());
             Sinhvien sinhvienput = sinhVienMapper.toSV(sinhVienDTO);
@@ -80,11 +83,12 @@ public class SinhVienService {
 
     public void delete(String maisinhvien){
         Optional<Sinhvien> sinhvien = sinhVienRepository.findById(maisinhvien);
-        if (sinhvien.isPresent()){
+        List<Baithi> baithis = sinhvien.get().getBaithis();
+        if (sinhvien.isPresent() && baithis.size()<=0){
             sinhVienRepository.delete(sinhvien.get());
         }
         else {
-            throw new RuntimeException("Không tồn tại bản ghi");
+            throw new RuntimeException("Không hợp lệ");
         }
     }
 

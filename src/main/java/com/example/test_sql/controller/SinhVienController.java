@@ -3,6 +3,8 @@ package com.example.test_sql.controller;
 import com.example.test_sql.dto.SinhVienDTO;
 import com.example.test_sql.service.SinhVienService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,8 +16,10 @@ public class SinhVienController {
     SinhVienService sinhVienService;
 
     @GetMapping("")
-    public List<SinhVienDTO> list(){
-        List<SinhVienDTO> sinhVienDTOList = sinhVienService.getList();
+    public List<SinhVienDTO> list(@RequestParam Integer page){
+        Integer p = page-1;
+        Pageable pageable = PageRequest.of(p,2);
+        List<SinhVienDTO> sinhVienDTOList = sinhVienService.getList(pageable);
         return sinhVienDTOList;
     }
 
@@ -26,15 +30,15 @@ public class SinhVienController {
     }
 
     @PostMapping("")
-    public String post(@RequestBody SinhVienDTO sinhVienDTO){
+    public SinhVienDTO post(@RequestBody SinhVienDTO sinhVienDTO){
         sinhVienService.post(sinhVienDTO);
-        return "Thêm thành công";
+        return sinhVienDTO;
     }
 
-    @PutMapping("/{masinhvien}")
-    public String put(@RequestBody SinhVienDTO sinhVienDTO,@PathVariable String masinhvien){
-        sinhVienService.put(sinhVienDTO,masinhvien);
-        return "Sửa thành công";
+    @PutMapping("/")
+    public SinhVienDTO put(@RequestBody SinhVienDTO sinhVienDTO){
+        sinhVienService.put(sinhVienDTO);
+        return sinhVienDTO;
     }
 
     @DeleteMapping({"/{masinhvien}"})

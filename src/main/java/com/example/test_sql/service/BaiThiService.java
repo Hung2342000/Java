@@ -10,6 +10,7 @@ import com.example.test_sql.repository.MonHocRepository;
 import com.example.test_sql.repository.SinhVienRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -30,8 +31,8 @@ public class BaiThiService {
     @Autowired
     MonHocRepository monHocRepository;
 
-    public List<BaiThiDTO> list(){
-        List<Baithi> baithis = baiThiRepository.findAll();
+    public List<BaiThiDTO> list(Pageable pageable){
+        List<Baithi> baithis = (List<Baithi>) baiThiRepository.findAll(pageable).getContent();
         List<BaiThiDTO> baiThiDTOList = new ArrayList<BaiThiDTO>();
         for (Baithi baithi: baithis) {
             BaiThiDTO baiThiDTO = baiThiMapper.baiThiDTO(baithi);
@@ -41,18 +42,14 @@ public class BaiThiService {
         return baiThiDTOList;
     }
 
-    public BaiThiDTO get(String mabaithi){
+    public BaiThiDTO get(Long mabaithi){
         Optional<Baithi> baithi = baiThiRepository.findById(mabaithi);
-        if(baithi.isPresent()){
-            BaiThiDTO baiThiDTO = baiThiMapper.baiThiDTO(baithi.get());
-            return baiThiDTO;
-        }
-        else {
-            throw new RuntimeException("Không tồn tại bản ghi");
-        }
+        BaiThiDTO baiThiDTO = baiThiMapper.baiThiDTO(baithi.get());
+        return baiThiDTO;
+
     }
 
-    public void  post(BaiThiDTO baiThiDTO){
+    public BaiThiDTO  post(BaiThiDTO baiThiDTO){
         Optional<Baithi> baithi = baiThiRepository.findById(baiThiDTO.getMaBaiThi());
         if (baithi.isPresent()) {
             throw new RuntimeException("Đã tồn tại bản ghi");
@@ -64,11 +61,12 @@ public class BaiThiService {
             baithi1.setMaMonHoc(monhoc.get());
             baithi1.setMaSinhVien(sinhvien.get());
             baiThiRepository.save(baithi1);
+            return baiThiDTO;
         }
     }
 
-    public void put(BaiThiDTO baiThiDTO , String mabaithi){
-        Optional<Baithi> baithi = baiThiRepository.findById(mabaithi);
+    public BaiThiDTO put(BaiThiDTO baiThiDTO){
+        Optional<Baithi> baithi = baiThiRepository.findById(baiThiDTO.getMaBaiThi());
         if(baithi.isPresent()){
             Optional<Sinhvien> sinhvien = sinhVienRepository.findById(baiThiDTO.getMaSinhVien());
             Optional<Monhoc> monhoc = monHocRepository.findById(baiThiDTO.getMaMonHoc());
@@ -79,15 +77,14 @@ public class BaiThiService {
             baithi.get().setMaMonHoc(baithiput.getMaMonHoc());
             baithi.get().setMaSinhVien(baithiput.getMaSinhVien());
             baiThiRepository.save(baithi.get());
-
-
+            return baiThiDTO;
         }
         else {
             throw new RuntimeException("Không tồn tại bản ghi");
         }
     }
 
-    public void delete(String mabaithi){
+    public void delete(Long mabaithi){
         Optional<Baithi> baithi = baiThiRepository.findById(mabaithi);
         if(baithi.isPresent()){
             baiThiRepository.delete(baithi.get());

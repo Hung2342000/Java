@@ -3,8 +3,10 @@ package com.example.test_sql.service;
 import com.example.test_sql.dto.KhoaDTO;
 import com.example.test_sql.mapper.KhoaMapper;
 import com.example.test_sql.model.Khoa;
+import com.example.test_sql.model.Lop;
 import com.example.test_sql.repository.KhoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +22,8 @@ public class KhoaService {
     @Autowired
     public KhoaMapper khoaMapper;
 
-    public List<KhoaDTO> getlist(){
-        List<Khoa> khoaList = khoaRepository.findAll();
+    public List<KhoaDTO> getlist(Pageable pageable){
+        List<Khoa> khoaList = khoaRepository.findAll(pageable).toList();
         List<KhoaDTO> khoaDTOList = new ArrayList<>();
         for (Khoa k: khoaList){
             KhoaDTO khoaDTO = khoaMapper.toDTO(k);
@@ -53,8 +55,8 @@ public class KhoaService {
         }
     }
 
-    public void Put(KhoaDTO khoaDTO,String MaKhoa){
-        Optional<Khoa> khoaUpdate = khoaRepository.findById(MaKhoa);
+    public void Put(KhoaDTO khoaDTO){
+        Optional<Khoa> khoaUpdate = khoaRepository.findById(khoaDTO.getMaKhoa());
         if (khoaUpdate.isPresent()) {
             Khoa khoa = khoaMapper.toKhoa(khoaDTO);
             khoaUpdate.get().setTenKhoa(khoa.getTenKhoa());
@@ -67,11 +69,12 @@ public class KhoaService {
     }
     public void Delete(String MaKhoa){
         Optional<Khoa> khoaDelete = khoaRepository.findById(MaKhoa);
-        if (khoaDelete.isPresent()) {
+        List<Lop> lops = khoaDelete.get().getLops();
+        if (khoaDelete.isPresent() && lops.size() <= 0) {
             khoaRepository.deleteById(MaKhoa);
         }
         else {
-            throw new RuntimeException("Không tồn tại bản ghi");
+            throw new RuntimeException("Không hợp lệ");
         }
     }
 

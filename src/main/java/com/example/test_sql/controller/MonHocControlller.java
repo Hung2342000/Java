@@ -1,10 +1,10 @@
 package com.example.test_sql.controller;
 
 import com.example.test_sql.dto.MonHocDTO;
-import com.example.test_sql.model.Monhoc;
-import com.example.test_sql.service.KhoaService;
 import com.example.test_sql.service.MonHocService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,8 +16,10 @@ public class MonHocControlller {
     public MonHocService monHocService = new MonHocService();
 
     @GetMapping("")
-    public List<MonHocDTO> getList(){
-        List<MonHocDTO> monhocList = monHocService.getList();
+    public List<MonHocDTO> getList(@RequestParam Integer page){
+        Integer p = page-1;
+        Pageable pageable = PageRequest.of(p,2);
+        List<MonHocDTO> monhocList = monHocService.getList(pageable);
         return monhocList;
     }
 
@@ -28,15 +30,15 @@ public class MonHocControlller {
     }
 
     @PostMapping("")
-    public String Post(@RequestBody MonHocDTO monhoc){
+    public MonHocDTO Post(@RequestBody MonHocDTO monhoc){
         monHocService.post(monhoc);
-        return "Thêm thành công";
+        return monhoc;
     }
 
-    @PutMapping("/{mamonhoc}")
-    public String put(@RequestBody MonHocDTO monhoc, @PathVariable("mamonhoc") String ma){
-        monHocService.put(monhoc,ma);
-        return "Sửa thành công";
+    @PutMapping("")
+    public MonHocDTO put(@RequestBody MonHocDTO monhoc){
+        monHocService.put(monhoc);
+        return monHocService.put(monhoc);
     }
 
     @DeleteMapping("/{mamonhoc}")
@@ -44,6 +46,4 @@ public class MonHocControlller {
         monHocService.delete(ma);
         return "Xóa thành công";
     }
-
-
 }

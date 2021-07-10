@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 public class BaiThiDTO {
-    private String MaBaiThi;
+    private Long MaBaiThi;
 
     private String MaMonHoc;
 

@@ -4,6 +4,8 @@ import com.example.test_sql.dto.LopDTO;
 import com.example.test_sql.model.Lop;
 import com.example.test_sql.service.LopService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -13,12 +15,13 @@ import java.util.List;
 @RequestMapping("/lop")
 public class LopController {
     @Autowired
-    public LopService lopService = new LopService();
+    public LopService lopService ;
 
     @GetMapping("")
-    public List<LopDTO> getList(){
-        List<LopDTO> lopDTOList = new ArrayList<LopDTO>();
-        lopDTOList = lopService.getList();
+    public List<LopDTO> getList(@RequestParam Integer page){
+        Integer p = page-1;
+        Pageable pageable = PageRequest.of(p,2);
+        List<LopDTO> lopDTOList = lopService.getList(pageable);
         return lopDTOList;
     }
 
@@ -29,15 +32,15 @@ public class LopController {
     }
 
     @PostMapping("")
-    public String post(@RequestBody LopDTO lopDTO){
+    public LopDTO post(@RequestBody LopDTO lopDTO){
         lopService.post(lopDTO);
-        return "Thêm thành công";
+        return lopDTO;
     }
 
-    @PutMapping("/{malop}")
-    public String post(@RequestBody LopDTO lopDTO,@PathVariable("malop") String malop){
-        lopService.put(lopDTO,malop);
-        return "Cập nhật thành công";
+    @PutMapping("")
+    public LopDTO put(@RequestBody LopDTO lopDTO){
+        lopService.put(lopDTO);
+        return lopDTO;
     }
 
     @DeleteMapping("/{malop}")
