@@ -42,8 +42,8 @@ public class MonHocControlller {
     }
 
     @DeleteMapping("/{mamonhoc}")
-    public String delete(@PathVariable("mamonhoc") String ma){
+    public Integer delete(@PathVariable("mamonhoc") String ma){
         monHocService.delete(ma);
-        return "Xóa thành công";
+        return monHocService.delete(ma);
     }
 }

@@ -5,15 +5,14 @@ import com.example.test_sql.mapper.SinhVienMapper;
 import com.example.test_sql.model.Baithi;
 import com.example.test_sql.model.Lop;
 import com.example.test_sql.model.Sinhvien;
+import com.example.test_sql.repository.CustomeRepository;
 import com.example.test_sql.repository.LopRepository;
 import com.example.test_sql.repository.SinhVienRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 public class SinhVienService {
@@ -25,6 +24,9 @@ public class SinhVienService {
 
     @Autowired
     SinhVienMapper sinhVienMapper;
+
+    @Autowired
+    CustomeRepository customeRepository;
 
     public List<SinhVienDTO> getList(Pageable pageable){
         List<Sinhvien> sinhviens = sinhVienRepository.findAll(pageable).toList();
@@ -46,6 +48,12 @@ public class SinhVienService {
             throw new RuntimeException("Không tồn tại bản ghi");
         }
     }
+    public List<Object> getLists(){
+        List<Object> sinhviens = Collections.singletonList(sinhVienRepository.findAll());
+        return sinhviens;
+
+    }
+
 
     public SinhVienDTO post(SinhVienDTO sinhVienDTO){
         Optional<Sinhvien> sinhvien = sinhVienRepository.findById(sinhVienDTO.getMaSinhVien());

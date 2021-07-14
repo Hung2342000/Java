@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="ISO-8859-1">
+  <title>Sinh viên</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+
+<body>
+<div class="container">
+  <h1>Thêm sinh viên</h1>
+  <form action="#" th:action="@{/sinhvien/post}"  th:object="${sinhVienDTO}" method="POST">
+    <input type="text" th:field="*{MaSinhVien}" placeholder="Mã sinh viên" class="form-control mb-4 col-4">
+
+    <input type="text" th:field="*{TenSV}"  placeholder="Tên sinh viên" class="form-control mb-4 col-4">
+
+    <input type="text" th:field="*{Date}" placeholder="Ngày tháng năm sinh" class="form-control mb-4 col-4">
+
+    <input type="text" th:field="*{DiaChi}"  placeholder="Địa chỉ" class="form-control mb-4 col-4">
+
+    <input type="text" th:field="*{MaLop}"  placeholder="Mã lớp" class="form-control mb-4 col-4">
+
+    <button type="submit" class="btn btn-info col-2"> Save </button>
+  </form>
+
+  <hr>
+  <a th:href="@{/sinhvien/index?page=1}"> Trở lại danh sách sinh viên</a>
+</div>
+</body>
+
+</html>

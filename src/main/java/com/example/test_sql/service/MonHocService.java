@@ -5,6 +5,7 @@ import com.example.test_sql.mapper.MonHocMapper;
 import com.example.test_sql.model.Baithi;
 import com.example.test_sql.model.Monhoc;
 import com.example.test_sql.repository.MonHocRepository;
+import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -69,14 +70,15 @@ public class MonHocService {
         }
     }
 
-    public void delete(String MaMonhoc){
+    public Integer delete(String MaMonhoc){
         Optional<Monhoc> monhocDelete = monHocRepository.findById(MaMonhoc);
         List<Baithi> baithis = monhocDelete.get().getBaithis();
         if (monhocDelete.isPresent() && baithis.size() == 0) {
             monHocRepository.deleteById(MaMonhoc);
+            return baithis.size();
         }
         else {
-            throw new RuntimeException("Không hợp lệ");
+            throw new RuntimeException("Không hợp lệ" );
         }
     }
 }
