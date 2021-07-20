@@ -38,15 +38,27 @@ public class SinhVienService {
         }
         return sinhVienDTOS;
     }
+
+    public List<SinhVienDTO> List(){
+        List<Sinhvien> sinhviens = sinhVienRepository.findAll();
+        List<SinhVienDTO> sinhVienDTOS = new ArrayList<>();
+        for (Sinhvien sv: sinhviens) {
+            SinhVienDTO sinhVienDTO = sinhVienMapper.toSVDTO(sv);
+            sinhVienDTOS.add(sinhVienDTO);
+        }
+        return sinhVienDTOS;
+    }
+
     public SinhVienDTO get(String masinhvien){
         Optional<Sinhvien> sinhvien = sinhVienRepository.findById(masinhvien);
+        SinhVienDTO sinhVienDTO = null;
         if (sinhvien.isPresent()){
-            SinhVienDTO sinhVienDTO = sinhVienMapper.toSVDTO(sinhvien.get());
-            return sinhVienDTO;
+            sinhVienDTO = sinhVienMapper.toSVDTO(sinhvien.get());
         }
         else {
             throw new RuntimeException("Không tồn tại bản ghi");
         }
+        return sinhVienDTO;
     }
     public List<Object> getLists(){
         List<Object> sinhviens = Collections.singletonList(sinhVienRepository.findAll());
@@ -71,22 +83,12 @@ public class SinhVienService {
     }
 
     public SinhVienDTO put(SinhVienDTO sinhVienDTO){
-        Optional<Sinhvien> sinhvien = sinhVienRepository.findById(sinhVienDTO.getMaSinhVien());
-        if(sinhvien.isPresent()){
+            Optional<Sinhvien> sinhvien = sinhVienRepository.findById(sinhVienDTO.getMaSinhVien());
             Optional<Lop> lop = lopRepository.findById(sinhVienDTO.getMaLop());
             Sinhvien sinhvienput = sinhVienMapper.toSV(sinhVienDTO);
-            sinhvien.get().setMaLop(lop.get());
-            sinhvien.get().setMaSinhVien(sinhvienput.getMaSinhVien());
-            sinhvien.get().setDiaChi(sinhvienput.getDiaChi());
-            sinhvien.get().setDate(sinhvienput.getDate());
-            sinhvien.get().setTenSV(sinhvienput.getTenSV());
-            sinhVienRepository.save(sinhvien.get());
+            sinhvienput.setMaLop(lop.get());
+            sinhVienRepository.save(sinhvienput);
             return sinhVienDTO;
-
-        }
-        else {
-            throw new RuntimeException("Không tồn tại bản ghi");
-        }
     }
 
     public void delete(String maisinhvien){

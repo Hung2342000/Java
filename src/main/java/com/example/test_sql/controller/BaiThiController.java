@@ -1,6 +1,7 @@
 package com.example.test_sql.controller;
 
 import com.example.test_sql.dto.BaiThiDTO;
+import com.example.test_sql.model.Baithi;
 import com.example.test_sql.model.Sinhvien;
 import com.example.test_sql.repository.BaiThiRepository;
 import com.example.test_sql.service.BaiThiService;
@@ -36,6 +37,11 @@ public class BaiThiController {
 
         BaiThiDTO baiThiDTO = baiThiService.get(mabaithi);
         return baiThiDTO;
+    }
+
+    @GetMapping("/diem/{diem}")
+    public Long geaa(@PathVariable Integer diem){
+        return baiThiService.a(diem);
     }
 
     @PostMapping("")

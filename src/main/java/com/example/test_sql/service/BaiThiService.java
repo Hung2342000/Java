@@ -42,6 +42,9 @@ public class BaiThiService {
         return baiThiDTOList;
     }
 
+    public Long a(Integer diem){
+        return baiThiRepository.getCustomAll(diem).getMaBaiThi();
+    }
     public BaiThiDTO get(Long mabaithi){
         Optional<Baithi> baithi = baiThiRepository.findById(mabaithi);
         BaiThiDTO baiThiDTO = baiThiMapper.baiThiDTO(baithi.get());

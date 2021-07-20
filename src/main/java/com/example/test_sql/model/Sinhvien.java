@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -18,7 +18,7 @@ public class Sinhvien {
     private String MaSinhVien;
 
     @Column
-    private Date Date;
+    private java.sql.Date Date;
 
     @Column
     private String TenSV;

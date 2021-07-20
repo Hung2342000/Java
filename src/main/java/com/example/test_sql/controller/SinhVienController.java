@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 @Controller
 @RequestMapping("/sinhvien")
@@ -27,10 +28,14 @@ public class SinhVienController {
     }
     @GetMapping("/index")
     public  String view(Model model,@RequestParam Integer page){
+        Integer listpage = (sinhVienService.List().size())/5 + 1;
         Integer p = page-1;
         Pageable pageable = PageRequest.of(p,5);
         List<SinhVienDTO> sinhVienDTOList = sinhVienService.getList(pageable);
         model.addAttribute("sv",sinhVienService.getList(pageable));
+        model.addAttribute("page",page);
+        model.addAttribute("listpage",listpage);
+
         return "admin/sinhvien/index.html";
     }
     @GetMapping("/get")
@@ -40,35 +45,47 @@ public class SinhVienController {
     }
 
 
-    @GetMapping("/{masinhvien}")
-    public @ResponseBody SinhVienDTO get(@PathVariable String masinhvien){
+    @GetMapping("index/{masinhvien}")
+    public String get(Model model,@RequestParam(value = "search") String masinhvien){
+        List<SinhVienDTO> list = new ArrayList<>();
         SinhVienDTO sinhVienDTO = sinhVienService.get(masinhvien);
-        return sinhVienDTO;
+        list.add(sinhVienDTO);
+        model.addAttribute("sv",list);
+        model.addAttribute("page",1);
+        model.addAttribute("listpage",1);
+        model.addAttribute("ma",masinhvien);
+        model.addAttribute("sv",sinhVienDTO);
+        return "admin/sinhvien/index?page=1";
     }
 
     @GetMapping("/showForm")
     public String showNewEmployeeForm(Model model) {
-        SinhVienDTO sinhVienDTO = new SinhVienDTO();
-        model.addAttribute("sinhVienDTO",sinhVienDTO);
+        model.addAttribute("sinhVienDTO",new SinhVienDTO());
         return "admin/sinhvien/add.html";
     }
 
     @PostMapping("/post")
     public String post(@ModelAttribute("sinhVienDTO") SinhVienDTO sinhVienDTO){
         sinhVienService.post(sinhVienDTO);
-        return "redirect:/sinhvien/index";
+        return "redirect:/sinhvien/index?page=1";
     }
 
-    @PutMapping("/")
-    public @ResponseBody SinhVienDTO put(@RequestBody SinhVienDTO sinhVienDTO){
+    @GetMapping("/FormUpdate/{masinhvien}")
+    public String formUpdate(@PathVariable String masinhvien,Model model ) {
+        SinhVienDTO sinhVienDTO = sinhVienService.get(masinhvien);
+        model.addAttribute("sinhVienDTO",sinhVienDTO);
+        return "admin/sinhvien/update.html";
+    }
+
+    @PostMapping("/put")
+    public String put(@ModelAttribute("sinhVienDTO") SinhVienDTO sinhVienDTO){
         sinhVienService.put(sinhVienDTO);
-        return sinhVienDTO;
+        return "redirect:/sinhvien/index?page=1";
     }
-
-    @DeleteMapping({"/{masinhvien}"})
+    @GetMapping({"/delete/{masinhvien}"})
     public String delete(@PathVariable String masinhvien){
         sinhVienService.delete(masinhvien);
-        return "Xóa thành công";
+        return "redirect:/sinhvien/index?page=1";
     }
 
 }

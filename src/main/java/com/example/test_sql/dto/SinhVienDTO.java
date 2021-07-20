@@ -4,7 +4,8 @@ import com.example.test_sql.model.Lop;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.sql.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,7 +15,7 @@ import java.util.Date;
 public class SinhVienDTO {
 
     private String MaSinhVien;
-    private java.util.Date Date;
+    private java.sql.Date Date;
     private String TenSV;
     private String DiaChi;
     private String MaLop;

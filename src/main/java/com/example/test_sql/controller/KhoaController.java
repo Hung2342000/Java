@@ -2,6 +2,7 @@ package com.example.test_sql.controller;
 
 import com.example.test_sql.dto.KhoaDTO;
 import com.example.test_sql.model.Khoa;
+import com.example.test_sql.repository.KhoaRepository;
 import com.example.test_sql.service.KhoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +20,7 @@ import java.util.Optional;
 @RequestMapping("/khoa")
 public class KhoaController {
     @Autowired
-    KhoaService khoaService = new KhoaService();
+    KhoaService khoaService ;
 
     @RequestMapping(value = "",method = RequestMethod.GET)
     public List<KhoaDTO> getlist(@RequestParam Integer page){
