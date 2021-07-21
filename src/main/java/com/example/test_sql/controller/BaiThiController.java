@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
-@RequestMapping("/baithi")
+@RequestMapping("/admin/baithi")
 @Slf4j
 public class BaiThiController {
     @Autowired

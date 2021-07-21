@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/lop")
+@RequestMapping("/admin/lop")
 public class LopController {
     @Autowired
     public LopService lopService ;

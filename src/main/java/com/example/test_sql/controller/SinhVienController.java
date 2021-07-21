@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.ArrayList;
 import java.util.List;
 @Controller
-@RequestMapping("/sinhvien")
+@RequestMapping("/admin/sinhvien")
 public class SinhVienController {
     @Autowired
     SinhVienService sinhVienService;

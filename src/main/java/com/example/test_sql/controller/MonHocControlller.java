@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/monhoc")
+@RequestMapping("/admin/monhoc")
 public class MonHocControlller {
     @Autowired
     public MonHocService monHocService = new MonHocService();

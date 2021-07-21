@@ -24,9 +24,9 @@ public class loginController {
     public @ResponseBody  String a(@PathVariable(value = "name") String name){
         return userRepository.findByEmail(name).getEmail();
     }
-    @RequestMapping("/admin")
+    @RequestMapping("/home")
     public String admin(){
-        return "admin/admin.html";
+        return "home.html";
     }
 
 }

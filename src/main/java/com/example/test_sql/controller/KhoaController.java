@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/khoa")
+@RequestMapping("/admin/khoa")
 public class KhoaController {
     @Autowired
     KhoaService khoaService ;
