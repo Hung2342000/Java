@@ -87,5 +87,4 @@ public class SinhVienController {
         sinhVienService.delete(masinhvien);
         return "redirect:/sinhvien/index?page=1";
     }
-
 }

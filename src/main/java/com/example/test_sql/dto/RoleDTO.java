@@ -10,9 +10,8 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Component
-public class UserDTO {
+public class RoleDTO {
     private long id;
-    private String email;
-    private String password;
-    private List<String> roles;
+    private String name;
+    private List<String> users;
 }

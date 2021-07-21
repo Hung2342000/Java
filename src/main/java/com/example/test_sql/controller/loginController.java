@@ -24,11 +24,6 @@ public class loginController {
     public @ResponseBody  String a(@PathVariable(value = "name") String name){
         return userRepository.findByEmail(name).getEmail();
     }
-
-    @RequestMapping("/user/abc/{id}")
-    public @ResponseBody User a(@PathVariable(value = "id") long id){
-        return userRepository.findById(id).get();
-    }
     @RequestMapping("/admin")
     public String admin(){
         return "admin/admin.html";

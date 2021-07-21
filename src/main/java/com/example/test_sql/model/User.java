@@ -2,7 +2,6 @@ package com.example.test_sql.model;
 import lombok.*;
 
 import java.awt.*;
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.*;
@@ -15,9 +14,10 @@ import javax.persistence.*;
 @Setter
 @Table(name = "user")
 public class User  {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
     private long id;
 
     @Column(name = "email", nullable = false, unique = true)

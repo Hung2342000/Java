@@ -1,6 +1,6 @@
 package com.example.test_sql.security;
 
-import com.example.test_sql.service.UserService;
+import com.example.test_sql.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,21 +20,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    public UserService userService;
+    public LoginService loginService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         http.authorizeRequests()
-                .anyRequest().authenticated().and()
+                .anyRequest().permitAll().and()
                 .formLogin().loginPage("/login").permitAll()
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .defaultSuccessUrl("/admin")
                 .failureUrl("/login?sucess=fail").and();
+        http.csrf().disable();
     }
 
     @Override
     protected  void configure(AuthenticationManagerBuilder auth) throws Exception{
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(loginService).passwordEncoder(passwordEncoder());
     }
 }
