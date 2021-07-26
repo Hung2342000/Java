@@ -22,7 +22,7 @@ public class BaiThiController {
     @Autowired
     private BaiThiService baiThiService ;
 
-    @GetMapping("")
+    @GetMapping("/list")
     public List<BaiThiDTO> list(@RequestParam Integer page){
         Integer p = page-1;
         Pageable pageable = PageRequest.of(p,2);

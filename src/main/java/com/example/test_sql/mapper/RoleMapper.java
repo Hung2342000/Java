@@ -1,6 +1,7 @@
 package com.example.test_sql.mapper;
 
 import com.example.test_sql.dto.RoleDTO;
+import com.example.test_sql.model.Authority;
 import com.example.test_sql.model.Role;
 import com.example.test_sql.model.User;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,12 @@ public class RoleMapper {
             user.add(list.get(i).getEmail());
         }
         roleDTO.setUsers(user);
+        List<String> au = new ArrayList<>();
+        List<Authority> authorityList = role.getAuthorities();
+        for (int i=0 ;i<authorityList.size();i++){
+            au.add(authorityList.get(i).getAuthority_name());
+        }
+        roleDTO.setAuthoritys(au);
         return roleDTO;
     }
 

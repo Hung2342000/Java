@@ -14,4 +14,5 @@ public class RoleDTO {
     private long id;
     private String name;
     private List<String> users;
+    private List<String> authoritys;
 }

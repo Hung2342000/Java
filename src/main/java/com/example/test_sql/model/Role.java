@@ -29,4 +29,12 @@ public class Role{
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private List<User> users;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "authority_role",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id")
+    )
+    private List<Authority> authorities;
 }

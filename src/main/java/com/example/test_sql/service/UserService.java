@@ -28,7 +28,7 @@ public class UserService  {
     public RoleRepository roleRepository;
 
     public List<UserDTO> getList(Pageable pageable){
-        List<User> users = userRepository.findAll();
+        List<User> users = userRepository.findAll(pageable).getContent();
         List<UserDTO> userDTOS = new ArrayList<>();
         for (User user:users) {
             UserDTO userDTO = userMapper.toUserDTO(user);

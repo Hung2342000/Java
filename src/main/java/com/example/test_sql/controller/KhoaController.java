@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,14 +22,14 @@ import java.util.Optional;
 public class KhoaController {
     @Autowired
     KhoaService khoaService ;
-
-    @RequestMapping(value = "",method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('list_khoa')")
+    @RequestMapping(value = "/list",method = RequestMethod.GET)
     public List<KhoaDTO> getlist(@RequestParam Integer page){
         Pageable pageable = PageRequest.of(page-1,2);
        List<KhoaDTO> khoaDTOList = khoaService.getlist(pageable);
        return khoaDTOList;
     };
-
+    @PreAuthorize("hasAuthority('create_khoa')")
     @RequestMapping(value = "",method = RequestMethod.POST)
     public KhoaDTO Post(@RequestBody KhoaDTO khoaDTO){
 
@@ -41,13 +42,13 @@ public class KhoaController {
         KhoaDTO khoaDTOget = khoaService.get(makhoa);
         return khoaDTOget;
     }
-
+    @PreAuthorize("hasAuthority('update_khoa')")
     @RequestMapping(value = "",method = RequestMethod.PUT)
     public KhoaDTO Put(@RequestBody KhoaDTO khoaDTO){
         khoaService.Put(khoaDTO);
         return khoaDTO;
     };
-
+    @PreAuthorize("hasAuthority('delele_khoa')")
     @RequestMapping(value = "/{makhoa}",method = RequestMethod.DELETE)
     public String delete(@PathVariable("makhoa") String makhoa){
         khoaService.Delete(makhoa);

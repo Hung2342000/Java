@@ -15,7 +15,7 @@ public class LopController {
     @Autowired
     public LopService lopService ;
 
-    @GetMapping("")
+    @GetMapping("/list")
     public List<LopDTO> getList(@RequestParam Integer page){
         Integer p = page-1;
         Pageable pageable = PageRequest.of(p,2);

@@ -6,6 +6,7 @@ import com.example.test_sql.service.SinhVienService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,8 @@ public class SinhVienController {
         List<SinhVienDTO> sinhVienDTOList = sinhVienService.getList(pageable);
         return sinhVienDTOList;
     }
-    @GetMapping("/index")
+    @PreAuthorize("hasAuthority('list_sinhvien')")
+    @GetMapping("/list")
     public  String view(Model model,@RequestParam Integer page){
         Integer listpage = (sinhVienService.List().size())/5 + 1;
         Integer p = page-1;
@@ -58,6 +60,7 @@ public class SinhVienController {
         return "admin/sinhvien/index?page=1";
     }
 
+    @PreAuthorize("hasAuthority('create_sinhvien')")
     @GetMapping("/showForm")
     public String showNewEmployeeForm(Model model) {
         model.addAttribute("sinhVienDTO",new SinhVienDTO());
@@ -67,9 +70,10 @@ public class SinhVienController {
     @PostMapping("/post")
     public String post(@ModelAttribute("sinhVienDTO") SinhVienDTO sinhVienDTO){
         sinhVienService.post(sinhVienDTO);
-        return "redirect:/sinhvien/index?page=1";
+        return "redirect:/admin/sinhvien/list?page=1";
     }
 
+    @PreAuthorize("hasAuthority('update_sinhvien')")
     @GetMapping("/FormUpdate/{masinhvien}")
     public String formUpdate(@PathVariable String masinhvien,Model model ) {
         SinhVienDTO sinhVienDTO = sinhVienService.get(masinhvien);
@@ -80,11 +84,13 @@ public class SinhVienController {
     @PostMapping("/put")
     public String put(@ModelAttribute("sinhVienDTO") SinhVienDTO sinhVienDTO){
         sinhVienService.put(sinhVienDTO);
-        return "redirect:/sinhvien/index?page=1";
+        return "redirect:/admin/sinhvien/list?page=1";
     }
+
+    @PreAuthorize("hasAuthority('delete_sinhvien')")
     @GetMapping({"/delete/{masinhvien}"})
     public String delete(@PathVariable String masinhvien){
         sinhVienService.delete(masinhvien);
-        return "redirect:/sinhvien/index?page=1";
+        return "redirect:/admin/sinhvien/list?page=1";
     }
 }

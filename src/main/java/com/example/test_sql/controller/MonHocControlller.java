@@ -15,7 +15,7 @@ public class MonHocControlller {
     @Autowired
     public MonHocService monHocService = new MonHocService();
 
-    @GetMapping("")
+    @GetMapping("/list")
     public List<MonHocDTO> getList(@RequestParam Integer page){
         Integer p = page-1;
         Pageable pageable = PageRequest.of(p,2);
