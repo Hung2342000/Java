@@ -41,6 +41,15 @@ public class RoleService {
         }
         return roleDTOList;
     }
+    public List<RoleDTO> List(){
+        List<Role> roles = roleRepository.findAll();
+        List<RoleDTO> roleDTOList = new ArrayList<>();
+        for (Role role:roles) {
+            RoleDTO roleDTO = roleMapper.toRoleDTO(role);
+            roleDTOList.add(roleDTO);
+        }
+        return roleDTOList;
+    }
 
     public RoleDTO post(RoleDTO roleDTO){
         Role rolepost = roleMapper.toRole(roleDTO);

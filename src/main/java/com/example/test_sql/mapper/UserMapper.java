@@ -17,6 +17,7 @@ public class UserMapper {
     public User toUser(UserDTO userDTO){
         User user = new User();
         user.setEmail(userDTO.getEmail());
+        user.setName(userDTO.getName());
         String password = passwordEncoder.encode(userDTO.getPassword());
         user.setPassword(password);
         return user;
@@ -24,6 +25,7 @@ public class UserMapper {
     public UserDTO toUserDTO(User user){
         UserDTO userDTO = new UserDTO();
         userDTO.setEmail(user.getEmail());
+        userDTO.setName(user.getName());
         userDTO.setId(user.getId());
         List<String> role = new ArrayList<>();
         List<Role> list = user.getRoles();

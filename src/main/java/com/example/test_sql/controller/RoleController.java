@@ -18,7 +18,7 @@ public class RoleController {
     @Autowired
     RoleService roleService;
 
-    //@PreAuthorize("hasAuthority('list_role')")
+    @PreAuthorize("hasAuthority('list_role')")
     @GetMapping("/list")
     public @ResponseBody List<RoleDTO> list(@RequestParam Integer page){
         Integer p = page-1;
@@ -27,15 +27,15 @@ public class RoleController {
         return roleDTOList;
     }
 
-    //@PreAuthorize("hasAuthority('create_role')")
+    @PreAuthorize("hasAuthority('create_role')")
     @RequestMapping(value = "/post",method = RequestMethod.POST)
     public @ResponseBody RoleDTO postU(@RequestBody RoleDTO roleDTO){
         roleService.post(roleDTO);
         return roleDTO;
     }
 
-    //@PreAuthorize("hasAuthority('delete_role')")
-    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('delete_role')")
+    @DeleteMapping("/delete/{id}")
     public @ResponseBody String delete(@PathVariable(value = "id") long id){
         roleService.delete(id);
         return "oke";

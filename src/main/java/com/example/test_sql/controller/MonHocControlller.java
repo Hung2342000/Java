@@ -5,6 +5,7 @@ import com.example.test_sql.service.MonHocService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class MonHocControlller {
     @Autowired
     public MonHocService monHocService = new MonHocService();
 
+    @PreAuthorize("hasAuthority('list_monhoc')")
     @GetMapping("/list")
     public List<MonHocDTO> getList(@RequestParam Integer page){
         Integer p = page-1;
@@ -29,19 +31,22 @@ public class MonHocControlller {
         return monhoc;
     }
 
-    @PostMapping("")
+    @PreAuthorize("hasAuthority('create_monhoc')")
+    @PostMapping("/post")
     public MonHocDTO Post(@RequestBody MonHocDTO monhoc){
         monHocService.post(monhoc);
         return monhoc;
     }
 
-    @PutMapping("")
+    @PreAuthorize("hasAuthority('update_monhoc')")
+    @PutMapping("/put")
     public MonHocDTO put(@RequestBody MonHocDTO monhoc){
         monHocService.put(monhoc);
         return monHocService.put(monhoc);
     }
 
-    @DeleteMapping("/{mamonhoc}")
+    @PreAuthorize("hasAuthority('delete_monhoc')")
+    @DeleteMapping("/delete/{mamonhoc}")
     public Integer delete(@PathVariable("mamonhoc") String ma){
         monHocService.delete(ma);
         return monHocService.delete(ma);

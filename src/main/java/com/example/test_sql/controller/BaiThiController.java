@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -21,7 +22,7 @@ import java.util.logging.Logger;
 public class BaiThiController {
     @Autowired
     private BaiThiService baiThiService ;
-
+    @PreAuthorize("hasAuthority('list_baithi')")
     @GetMapping("/list")
     public List<BaiThiDTO> list(@RequestParam Integer page){
         Integer p = page-1;
@@ -44,20 +45,23 @@ public class BaiThiController {
         return baiThiService.a(diem);
     }
 
-    @PostMapping("")
+    @PreAuthorize("hasAuthority('create_baithi')")
+    @PostMapping("/post")
     public BaiThiDTO post(@RequestBody BaiThiDTO baiThiDTO){
 
         baiThiService.post(baiThiDTO);
         return baiThiService.post(baiThiDTO);
     }
 
-    @PutMapping("")
+    @PreAuthorize("hasAuthority('update_baithi')")
+    @PutMapping("/put")
     public BaiThiDTO put(@RequestBody BaiThiDTO baiThiDTO){
         baiThiService.put(baiThiDTO);
         return baiThiService.put(baiThiDTO);
 
     }
-    @DeleteMapping("/{mabaithi}")
+    @PreAuthorize("hasAuthority('delete_baithi')")
+    @DeleteMapping("/delete/{mabaithi}")
     public String delete(@PathVariable("mabaithi") Long mabaithi){
         baiThiService.delete(mabaithi);
         return "Xóa thành công";

@@ -29,8 +29,9 @@ public class KhoaController {
        List<KhoaDTO> khoaDTOList = khoaService.getlist(pageable);
        return khoaDTOList;
     };
+
     @PreAuthorize("hasAuthority('create_khoa')")
-    @RequestMapping(value = "",method = RequestMethod.POST)
+    @RequestMapping(value = "/post",method = RequestMethod.POST)
     public KhoaDTO Post(@RequestBody KhoaDTO khoaDTO){
 
         khoaService.Post(khoaDTO);
@@ -42,14 +43,16 @@ public class KhoaController {
         KhoaDTO khoaDTOget = khoaService.get(makhoa);
         return khoaDTOget;
     }
+
     @PreAuthorize("hasAuthority('update_khoa')")
-    @RequestMapping(value = "",method = RequestMethod.PUT)
+    @RequestMapping(value = "/put",method = RequestMethod.PUT)
     public KhoaDTO Put(@RequestBody KhoaDTO khoaDTO){
         khoaService.Put(khoaDTO);
         return khoaDTO;
     };
+
     @PreAuthorize("hasAuthority('delele_khoa')")
-    @RequestMapping(value = "/{makhoa}",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete/{makhoa}",method = RequestMethod.DELETE)
     public String delete(@PathVariable("makhoa") String makhoa){
         khoaService.Delete(makhoa);
         return "Xóa thành công";

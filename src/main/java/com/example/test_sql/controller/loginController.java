@@ -51,5 +51,13 @@ public class loginController {
         }
         return "home.html" ;
     }
+    @GetMapping("/index/k")
+    public String master(){
+        return "admin/user/index.html";
+    }
+    @GetMapping("/ad")
+    public String mastejjjr(){
+        return "/admin/layouts/menu";
+    }
 
 }

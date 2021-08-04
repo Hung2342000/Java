@@ -34,6 +34,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         http.csrf().disable();
         http.authorizeRequests().antMatchers("/home/**").permitAll();
+
+
        // http.authorizeRequests().antMatchers(HttpMethod.GET,"/admin/user/index").hasAuthority("create_user");
         //http.authorizeRequests().antMatchers("/admin/user?page=1").hasAuthority("create_user");
         //http.authorizeRequests().antMatchers("/admin/user/**").hasAuthority("create_user");
@@ -46,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .failureUrl("/login?sucess=fail").and();
         http
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/home").and();
-
+        http.httpBasic().and();
     }
 
     @Override

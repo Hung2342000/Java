@@ -5,14 +5,18 @@
     <title>Home</title>
 </head>
 <body>
-    <a  th:href="@{/login}">Login</a>
+    <a sec:authorize="isAnonymous()"  th:href="@{/login}">Login</a>
     </br>
-    Logged user: <span sec:authentication="name"></span> <br/>
-    Roles: <span sec:authentication="principal.authorities"></span>
+    <div sec:authorize="isAuthenticated()">
+        Logged user: <span sec:authentication="name"></span> <br/>
+        Roles: <span sec:authentication="principal.authorities"></span>
+        <form th:action="@{/logout}" method="POST">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+
     <h1>Hello word</h1>
     </br>
-    <form th:action="@{/logout}" method="POST">
-        <button type="submit">Logout</button>
-    </form>
+
 </body>
 </html>

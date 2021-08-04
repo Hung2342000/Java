@@ -83,7 +83,6 @@ public class SinhVienService {
     }
 
     public SinhVienDTO put(SinhVienDTO sinhVienDTO){
-            Optional<Sinhvien> sinhvien = sinhVienRepository.findById(sinhVienDTO.getMaSinhVien());
             Optional<Lop> lop = lopRepository.findById(sinhVienDTO.getMaLop());
             Sinhvien sinhvienput = sinhVienMapper.toSV(sinhVienDTO);
             sinhvienput.setMaLop(lop.get());
