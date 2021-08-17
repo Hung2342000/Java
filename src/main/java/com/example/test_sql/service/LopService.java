@@ -40,8 +40,18 @@ public class LopService {
 
         return lopDTOList;
     }
+    public List<LopDTO> List() {
+        List<Lop> lopList = lopRepository.findAll();
+        List<LopDTO> lopDTOList = new ArrayList<LopDTO>();
+        for (Lop lop : lopList) {
+            LopDTO lopDTO = lopMapper.toDTO(lop);
+            lopDTOList.add(lopDTO);
+        }
 
-    public LopDTO get(String malop) {
+        return lopDTOList;
+    }
+
+    public LopDTO getone(String malop) {
         Optional<Lop> lopOptional = lopRepository.findById(malop);
         LopDTO lopDTO = lopMapper.toDTO(lopOptional.get());
         if (lopOptional.isPresent()) {
@@ -56,22 +66,29 @@ public class LopService {
         if (lopOptional.isPresent()) {
             throw new RuntimeException("Đã tồn tại bản ghi ");
         } else {
-            Optional<Khoa> khoaLop = khoaRepository.findById(lopDTO.getMaKhoa());
+            Khoa khoaLop = khoaRepository.khoaByName(lopDTO.getTenKhoa());
             Lop lop = lopMapper.toLop(lopDTO);
-            lop.setMaKhoa(khoaLop.get());
+            lop.setTenKhoa(khoaLop);
             lopRepository.save(lop);
         }
     }
 
-    public void put(LopDTO lopDTO) {
-        Optional<Lop> optionalLop = lopRepository.findById(lopDTO.getMaLop());
+    public List<LopDTO> search(String search) {
+        List<Lop> lopList = lopRepository.search(search);
+        List<LopDTO> lopDTOList = new ArrayList<LopDTO>();
+        for (Lop lop : lopList) {
+            LopDTO lopDTO = lopMapper.toDTO(lop);
+            lopDTOList.add(lopDTO);
+        }
+        return lopDTOList;
+    }
+
+    public void put(LopDTO lopDTO,String malop) {
+        Optional<Lop> optionalLop = lopRepository.findById(malop);
         if (optionalLop.isPresent()) {
-            Optional<Khoa> khoaLop = khoaRepository.findById(lopDTO.getMaKhoa());
-            Lop lop = lopMapper.toLop(lopDTO);
-            lop.setMaKhoa(khoaLop.get());
-            optionalLop.get().setMaLop(lop.getMaLop());
-            optionalLop.get().setTenLop(lop.getTenLop());
-            optionalLop.get().setMaKhoa(lop.getMaKhoa());
+            Khoa khoaLop = khoaRepository.khoaByName(lopDTO.getTenKhoa());
+            optionalLop.get().setTenLop(lopDTO.getTenLop());
+            optionalLop.get().setTenKhoa(khoaLop);
             lopRepository.save(optionalLop.get());
         } else {
             throw new RuntimeException("Không tồn tại bản ghi");
@@ -82,7 +99,7 @@ public class LopService {
         Optional<Lop> deletelop = lopRepository.findById(malop);
         List<Sinhvien> sinhviens = deletelop.get().getSinhviens();
 
-        if (deletelop.isPresent() && sinhviens.size() <= 0) {
+        if ( sinhviens.size() <= 0) {
             lopRepository.delete(deletelop.get());
 
         } else {

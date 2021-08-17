@@ -21,7 +21,7 @@ public class Authority {
     @Column(name = "authority_name", nullable = false)
     private String authority_name;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany()
     @JoinTable(
             name = "authority_role",
             joinColumns = @JoinColumn(name = "authority_id"),

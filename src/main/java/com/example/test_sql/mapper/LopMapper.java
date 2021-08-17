@@ -17,7 +17,7 @@ public class LopMapper {
         LopDTO dto = new LopDTO();
         dto.setTenLop(lop.getTenLop());
         dto.setMaLop(lop.getMaLop());
-        dto.setMaKhoa(lop.getMaKhoa().getMaKhoa());
+        dto.setTenKhoa(lop.getTenKhoa().getMaKhoa());
         return  dto;
     }
 

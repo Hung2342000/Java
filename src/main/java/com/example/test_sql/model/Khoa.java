@@ -14,15 +14,16 @@ import java.util.List;
 @Table(name = "khoa")
 public class Khoa {
     @Id
+    @Column(name = "MaKhoa",nullable = false)
     private String MaKhoa;
 
-    @Column(name = "DiaChi")
+    @Column(name = "DiaChi",nullable = false)
     private String DiaChi;
 
-    @Column(name = "TenKhoa")
+    @Column(name = "TenKhoa",nullable = false,unique = true)
     private String TenKhoa;
 
-    @OneToMany(mappedBy = "MaKhoa", cascade = CascadeType.ALL )
+    @OneToMany(mappedBy = "TenKhoa", cascade = CascadeType.ALL )
     private List<Lop> lops;
 
 }

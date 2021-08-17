@@ -1,27 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org" xmlns:sec="http://thymeleaf.org/thymeleaf-extras-springsecurity5">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<head th:include ="~{/admin/layouts/header :: head}">
     <title>User</title>
-
-    <meta name="_csrf" content="${_csrf.token}"/>
-    <!-- default header name is X-CSRF-TOKEN -->
-    <meta name="_csrf_header" content="${_csrf.headerName}"/>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" th:href="@{/plugins/fontawesome-free/css/all.min.css}">
-    <link rel="stylesheet" type="text/css"
-          th:href="@{/https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css}">
-    <link rel="stylesheet" type="text/css"
-          th:href="@{/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/plugins/jqvmap/jqvmap.min.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/dist/css/adminlte.min.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/plugins/overlayScrollbars/css/OverlayScrollbars.min.css}">
-    <link rel="stylesheet" type="text/css"
-          th:href="@{/https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700}">
-    <link rel="stylesheet" type="text/css" th:href="@{/select2/select2.min.css}">
-
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -71,55 +51,7 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
         <!-- Sidebar -->
-        <div class="sidebar">
-
-            <!-- Sidebar Menu -->
-            <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                    data-accordion="false">
-                    <!-- Add icons to the links using the .nav-icon class
-                         with font-awesome or any other icon font library -->
-                    <li class="nav-item has-treeview menu-open">
-                        <a href="#" class="nav-link active">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>
-                                ADMIN
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a th:href="@{/admin/user/list?page=1}" class="nav-link active">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>USER</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="./index2.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>ROLE</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="./index3.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>LOP</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="./index3.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>SINHVIEN</p>
-                                </a>
-                            </li>
-
-
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
-            <!-- /.sidebar-menu -->
-        </div>
+        <div class="sidebar" th:include ="~{/admin/layouts/menu :: menu}"></div>
         <!-- /.sidebar -->
     </aside>
 
@@ -206,104 +138,105 @@
                     </li>
                 </ul>
             </div>
+            <div name = "modal">
+                <div class="modal" id="modaladduser" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Thêm User</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST" id="addform">
 
-            <div class="modal" id="modaladduser" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Thêm User</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form method="POST">
+                                    <input type="text" placeholder="Tên User" id="name" name="name"
+                                           class="form-control mb-4 col-12" >
+                                    <span style="display: none" id="vname">Bạn chưa nhập tên</span>
+                                    <input type="text" placeholder="Email" id="email" name="email"
+                                           class="form-control mb-4 col-12" >
 
-                                <input type="text" placeholder="Tên User" id="name" name="name"
-                                       class="form-control mb-4 col-12">
+                                    <input type="text" placeholder="Password" id="password" name="password"
+                                           class="form-control mb-4 col-12" >
+                                    </br>
+                                    <label> Chọn vai trò</label>
+                                    <select id="roles" class="select2-init form-control mb-4 col-12" name="roles"
+                                            multiple="multiple">
+                                        <option th:each="role:${roles}"
+                                                th:value="${role.name}"
+                                                th:text="${role.name}">
+                                    </select>
+                                    </br>
+                                    </br>
 
-                                <input type="text" placeholder="Email" id="email" name="email"
-                                       class="form-control mb-4 col-12">
-
-                                <input type="text" placeholder="Password" id="password" name="password"
-                                       class="form-control mb-4 col-12">
-
-                                <label> Chọn vai trò</label>
-                                <select id="roles" class="select2-init form-control mb-4 col-12" name="roles"
-                                        multiple="multiple">
-                                    <option th:each="role:${roles}"
-                                            th:value="${role.name}"
-                                            th:text="${role.name}">
-                                </select>
-                                </br>
-                                </br>
-
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="sb">Save</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal" id="modaldeleteuser" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Xóa User</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            Bạn có chắc chắn muốn xóa không?
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="delete">Yes</button>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="sb">Save</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="modal" id="modaledituser" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Edit User</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                <div class="modal" id="modaldeleteuser" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Xóa User</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Bạn có chắc chắn muốn xóa không?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="delete">Yes</button>
+                            </div>
                         </div>
-                        <div class="modal-body">
-                            <form method="POST">
+                    </div>
+                </div>
 
-                                <input type="text" placeholder="Tên User" id="nameedit" name="name"
-                                       class="form-control mb-4 col-12">
+                <div class="modal" id="modaledituser" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Edit User</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST" id="editu" >
 
-                                <input type="text" placeholder="Email" id="emailedit" name="email"
-                                       class="form-control mb-4 col-12">
+                                    <input type="text" placeholder="Tên User" id="nameedit" name="nameedit"
+                                           class="form-control mb-4 col-12" required>
 
-                                <input type="text" placeholder="Password" id="passwordedit" name="password"
-                                       class="form-control mb-4 col-12">
+                                    <input type="text" placeholder="Email" id="emailedit" name="emailedit"
+                                           class="form-control mb-4 col-12" required>
 
-                                <label> Chọn vai trò</label>
-                                <select id="rolesedit" class="select2-init form-control mb-4 col-12" name="roles"
-                                        multiple="multiple">
-                                    <option th:each="role:${roles}"
-                                            th:value="${role.name}"
-                                            th:text="${role.name}">
-                                </select>
-                                </br>
-                                </br>
+                                    <input type="text" placeholder="Password" id="passwordedit" name="passwordedit"
+                                           class="form-control mb-4 col-12" required>
+                                    </br>
+                                    <label> Chọn vai trò</label>
+                                    <select id="rolesedit" class="select2-init form-control mb-4 col-12" name="roles"
+                                            multiple="multiple">
+                                        <option  th:each="role:${roles}"
+                                                th:value="${role.name}"
+                                                th:text="${role.name}">
+                                    </select>
+                                    </br>
+                                    </br>
 
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="edit">Save</button>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="edit">Save</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -315,180 +248,12 @@
     </div>
 
     <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
+
     </aside>
     <!-- /.control-sidebar -->
 </div>
-<!-- ./wrapper -->
+<div  th:include ="~{/admin/layouts/js :: js}"></div>
+<script th:src="@{/js/user.js}" type="text/javascript"></script>
 
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js" th:src="@{/plugins/jquery/jquery.min.js}"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="plugins/jquery-ui/jquery-ui.min.js" th:src="@{/plugins/jquery-ui/jquery-ui.min.js}"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"
-        th:src="@{/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
-<!-- ChartJS -->
-<script src="plugins/chart.js/Chart.min.js" th:src="@{/plugins/chart.js/Chart.min.js}"></script>
-<!-- Sparkline -->
-<script src="plugins/sparklines/sparkline.js" th:src="@{/plugins/sparklines/sparkline.js}"></script>
-<!-- JQVMap -->
-<script src="plugins/jqvmap/jquery.vmap.min.js" th:src="@{/plugins/jqvmap/jquery.vmap.min.js}"></script>
-<script src="plugins/jqvmap/maps/jquery.vmap.usa.js" th:src="@{/plugins/jqvmap/maps/jquery.vmap.usa.js}"></script>
-<!-- jQuery Knob Chart -->
-<script src="plugins/jquery-knob/jquery.knob.min.js" th:src="@{/plugins/jquery-knob/jquery.knob.min.js}"></script>
-<!-- daterangepicker -->
-<script src="plugins/moment/moment.min.js"></script>
-<script src="plugins/daterangepicker/daterangepicker.js"
-        th:src="@{/plugins/daterangepicker/daterangepicker.js}"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"
-        th:src="@{/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.j}"></script>
-<!-- Summernote -->
-<script src="plugins/summernote/summernote-bs4.min.js" th:src="@{/plugins/summernote/summernote-bs4.min.js}"></script>
-<!-- overlayScrollbars -->
-<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"
-        th:src="@{/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js}"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.js" th:src="@{/dist/js/adminlte.js}"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard.js" th:src="@{/dist/js/pages/dashboard.js}"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js" th:src="@{/dist/js/demo.js}"></script>
-<script th:src="@{/select2/select2.min.js}"></script>
-<script th:inline="javascript" type="text/javascript">
-
-    $(document).ready(function () {
-
-        $('#btn_add_user').click(function () {
-            $('#modaladduser').modal('show');
-            $(".select2-init").select2({
-                allowClear: true
-            });
-            $("#sb").click(function (e) {
-                let name = $("#name").val();
-                let password = $("#password").val();
-                let email = $("#email").val();
-                let role = $("#roles").val();
-                console.log(role);
-                let data = {
-                    "name": name,
-                    "email": email,
-                    "password": password,
-                    "roles": role
-                }
-                $.ajax({
-                    type: "POST",
-                    contentType: "application/json",
-                    url: "/admin/user/post",
-                    dataType: "json",
-                    data: JSON.stringify(data),
-                    success: function (response) {
-                        console.log(response);
-                        let Button = '<tr>'+
-                            "<th >"+ response.id + '</th>'+
-                            '<td>'+ response.name + '</td>'+
-                            "<td >"+ response.email+"</td>"+
-                            "<td >"+ response.roles+"</td>"+
-                            "<td>"+
-                                '<button className="edituser btn btn-primary">'+
-                                    "Edit"+
-                                +'</button>'+
-                                '<button className="btn btn-danger">'+ "Delete" +"</button>"
-                            +"</td>"+
-                        "</tr>"
-                        location.reload();
-                        $('#modaladduser').modal("hide");
-                    }
-                })
-
-            });
-
-        });
-
-        var id;
-        $(".edituser").click(function () {
-            $("#modaledituser").modal("show");
-            $(".select2-init").select2({
-                allowClear: true
-            });
-            id = $(this).data("id");
-            console.log(id);
-            $.ajax({
-                type:"GET",
-                url : "/admin/user/get/" + id,
-                success: function (response){
-                    $("#nameedit").val(response.name);
-
-                    $("#emailedit").val(response.email);
-                }
-
-            });
-
-            $("#edit").click(function (){
-                let name = $("#nameedit").val();
-                let password = $("#passwordedit").val();
-                let email = $("#emailedit").val();
-                let role = $("#rolesedit").val();
-                let data = {
-                    "name": name,
-                    "email": email,
-                    "password": password,
-                    "roles": role
-                };
-                $.ajax({
-                    type: "PUT",
-                    contentType: "application/json",
-                    url: "/admin/user/put/" + id,
-                    dataType: "json",
-                    data: JSON.stringify(data),
-                    success: function (){
-                        location.reload();
-                        console.log("hưng");
-                        $("#modaledituser").modal("hide");
-                    }
-                })
-
-            })
-        })
-
-        $(".deleteuser").click(function () {
-            $("#modaldeleteuser").modal("show");
-
-            id = $(this).data("id");
-            console.log(id);
-
-            $("#delete").click(function (){
-
-                $.ajax({
-
-                    url: "/admin/user/delete/" + id,
-                    type: "DELETE",
-
-                    success: function (response){
-                        console.log(response);
-                        $("#"+id).remove();
-                        $("#modaldeleteuser").modal("hide");
-                    }
-                })
-
-            })
-        });
-        $("#sea").click(function (){
-            let data = $("#timkiem").val();
-            console.log(data);
-            $.ajax({
-                url:"/admin/user/list/1?search="+data,
-                type:"get",
-                success: function(d){
-                     $("#timkiem").val(data);
-                }
-            })
-        })
-
-
-    });
-</script>
 </body>
 </html>

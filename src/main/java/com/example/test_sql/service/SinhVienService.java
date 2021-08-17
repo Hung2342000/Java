@@ -11,7 +11,14 @@ import com.example.test_sql.repository.SinhVienRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletContext;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 @Component
@@ -28,13 +35,15 @@ public class SinhVienService {
     @Autowired
     CustomeRepository customeRepository;
 
+    @Autowired
+    ServletContext application;
+
     public List<SinhVienDTO> getList(Pageable pageable){
         List<Sinhvien> sinhviens = sinhVienRepository.findAll(pageable).toList();
         List<SinhVienDTO> sinhVienDTOS = new ArrayList<>();
         for (Sinhvien sv: sinhviens) {
             SinhVienDTO sinhVienDTO = sinhVienMapper.toSVDTO(sv);
             sinhVienDTOS.add(sinhVienDTO);
-
         }
         return sinhVienDTOS;
     }
@@ -49,7 +58,17 @@ public class SinhVienService {
         return sinhVienDTOS;
     }
 
-    public SinhVienDTO get(String masinhvien){
+    public List<SinhVienDTO> search(String search){
+        List<Sinhvien> sinhviens = sinhVienRepository.search(search);
+        List<SinhVienDTO> sinhVienDTOS = new ArrayList<>();
+        for (Sinhvien sv: sinhviens) {
+            SinhVienDTO sinhVienDTO = sinhVienMapper.toSVDTO(sv);
+            sinhVienDTOS.add(sinhVienDTO);
+        }
+        return sinhVienDTOS;
+    }
+
+    public SinhVienDTO getone(String masinhvien){
         Optional<Sinhvien> sinhvien = sinhVienRepository.findById(masinhvien);
         SinhVienDTO sinhVienDTO = null;
         if (sinhvien.isPresent()){
@@ -60,40 +79,53 @@ public class SinhVienService {
         }
         return sinhVienDTO;
     }
-    public List<Object> getLists(){
-        List<Object> sinhviens = Collections.singletonList(sinhVienRepository.findAll());
-        return sinhviens;
-
-    }
-
 
     public SinhVienDTO post(SinhVienDTO sinhVienDTO){
         Optional<Sinhvien> sinhvien = sinhVienRepository.findById(sinhVienDTO.getMaSinhVien());
         if(sinhvien.isPresent()){
             throw new RuntimeException("Đã tồn tại bản ghi");
-
         }
         else {
             Optional<Lop> lop = lopRepository.findById(sinhVienDTO.getMaLop());
             Sinhvien sinhvienpost = sinhVienMapper.toSV(sinhVienDTO);
             sinhvienpost.setMaLop(lop.get());
+            String filename = sinhVienDTO.getMultipartFile().getOriginalFilename();
+            try{
+                FileCopyUtils.copy(sinhVienDTO.getMultipartFile().getBytes(),new File("D:\\QuanLySinhVien\\src\\main\\resources\\static\\image\\" +filename));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            sinhvienpost.setImage(filename);
             sinhVienRepository.save(sinhvienpost);
             return  sinhVienDTO;
         }
     }
 
-    public SinhVienDTO put(SinhVienDTO sinhVienDTO){
-            Optional<Lop> lop = lopRepository.findById(sinhVienDTO.getMaLop());
-            Sinhvien sinhvienput = sinhVienMapper.toSV(sinhVienDTO);
-            sinhvienput.setMaLop(lop.get());
-            sinhVienRepository.save(sinhvienput);
-            return sinhVienDTO;
+    public SinhVienDTO put(SinhVienDTO sinhVienDTO,String masinhvien){
+        Optional<Lop> lop = lopRepository.findById(sinhVienDTO.getMaLop());
+        Optional<Sinhvien> sinhvienput = sinhVienRepository.findById(masinhvien);
+        sinhvienput.get().setTenSV(sinhVienDTO.getTenSV());
+        sinhvienput.get().setDate(sinhVienDTO.getDate());
+        sinhvienput.get().setDiaChi(sinhVienDTO.getDiaChi());
+        String filename = sinhVienDTO.getMultipartFile().getOriginalFilename();
+        try{
+            FileCopyUtils.copy(sinhVienDTO.getMultipartFile().getBytes(),new File("D:\\QuanLySinhVien\\src\\main\\resources\\static\\image\\" +filename));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        sinhvienput.get().setImage(filename);
+        sinhvienput.get().setMaLop(lop.get());
+        sinhVienRepository.save(sinhvienput.get());
+        return sinhVienDTO;
     }
 
-    public void delete(String maisinhvien){
-        Optional<Sinhvien> sinhvien = sinhVienRepository.findById(maisinhvien);
+    public void delete(String masinhvien){
+        Optional<Sinhvien> sinhvien = sinhVienRepository.findById(masinhvien);
         List<Baithi> baithis = sinhvien.get().getBaithis();
-        if (sinhvien.isPresent() && baithis.size()<=0){
+        String filename = sinhvien.get().getImage();
+        File file = new File("D:\\QuanLySinhVien\\src\\main\\resources\\static\\image\\" +filename);
+        if ( baithis.size()<=0){
+            file.delete();
             sinhVienRepository.delete(sinhvien.get());
         }
         else {

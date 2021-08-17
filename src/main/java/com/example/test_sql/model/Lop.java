@@ -22,8 +22,8 @@ public class Lop {
     private String TenLop;
 
     @ManyToOne
-    @JoinColumn(name = "MaKhoa",nullable = false)
-    private Khoa MaKhoa;
+    @JoinColumn(name = "TenKhoa",nullable = false)
+    private Khoa TenKhoa;
 
     @OneToMany(mappedBy = "MaLop", cascade = CascadeType.ALL)
     private List<Sinhvien>  sinhviens;

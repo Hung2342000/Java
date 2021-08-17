@@ -26,6 +26,9 @@ public class Sinhvien {
     @Column
     private String DiaChi;
 
+    @Column
+    private String image;
+
     @ManyToOne
     @JoinColumn(name = "MaLop",nullable = false)
     private Lop MaLop;

@@ -23,6 +23,7 @@ public class SinhVienMapper {
         sinhVienDTO.setDiaChi(sinhvien.getDiaChi());
         sinhVienDTO.setTenSV(sinhvien.getTenSV());
         sinhVienDTO.setMaLop(sinhvien.getMaLop().getMaLop());
+        sinhVienDTO.setImage(sinhvien.getImage());
         return sinhVienDTO;
     }
 }

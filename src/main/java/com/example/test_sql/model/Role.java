@@ -19,7 +19,7 @@ public class Role{
     @Column(name = "id", nullable = false)
     private long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false,unique = true)
     private String name;
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -30,7 +30,7 @@ public class Role{
     )
     private List<User> users;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany()
     @JoinTable(
             name = "authority_role",
             joinColumns = @JoinColumn(name = "role_id"),

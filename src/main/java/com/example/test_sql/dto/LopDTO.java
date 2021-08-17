@@ -18,6 +18,6 @@ public class LopDTO {
 
     private String TenLop;
 
-    private String MaKhoa;
+    private String TenKhoa;
 
 }

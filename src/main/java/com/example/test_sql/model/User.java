@@ -5,6 +5,7 @@ import java.awt.*;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Data
 @AllArgsConstructor
@@ -20,10 +21,10 @@ public class User  {
     @Column(name = "id", nullable = false)
     private long id;
 
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", nullable = false,unique = true)
     private String email;
 
     @Column(name = "password", nullable = false)

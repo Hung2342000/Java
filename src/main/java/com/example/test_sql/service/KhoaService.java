@@ -32,6 +32,25 @@ public class KhoaService {
         return khoaDTOList;
     }
 
+    public List<KhoaDTO> List(){
+        List<Khoa> khoaList = khoaRepository.findAll();
+        List<KhoaDTO> khoaDTOList = new ArrayList<>();
+        for (Khoa k: khoaList){
+            KhoaDTO khoaDTO = khoaMapper.toDTO(k);
+            khoaDTOList.add(khoaDTO);
+        }
+        return khoaDTOList;
+    }
+    public List<KhoaDTO> search(String search){
+        List<Khoa> khoaList = khoaRepository.search(search);
+        List<KhoaDTO> khoaDTOList = new ArrayList<>();
+        for (Khoa k: khoaList){
+            KhoaDTO khoaDTO = khoaMapper.toDTO(k);
+            khoaDTOList.add(khoaDTO);
+        }
+        return khoaDTOList;
+    }
+
     public KhoaDTO get(String MaKhoa){
         Optional<Khoa> khoa = khoaRepository.findById(MaKhoa);
         if (khoa.isPresent()) {
@@ -55,8 +74,8 @@ public class KhoaService {
         }
     }
 
-    public void Put(KhoaDTO khoaDTO){
-        Optional<Khoa> khoaUpdate = khoaRepository.findById(khoaDTO.getMaKhoa());
+    public void Put(KhoaDTO khoaDTO,String makhoa){
+        Optional<Khoa> khoaUpdate = khoaRepository.findById(makhoa);
         if (khoaUpdate.isPresent()) {
             Khoa khoa = khoaMapper.toKhoa(khoaDTO);
             khoaUpdate.get().setTenKhoa(khoa.getTenKhoa());
@@ -67,11 +86,13 @@ public class KhoaService {
             throw new RuntimeException("không tồn tại bản ghi");
         }
     }
-    public void Delete(String MaKhoa){
-        Optional<Khoa> khoaDelete = khoaRepository.findById(MaKhoa);
-        List<Lop> lops = khoaDelete.get().getLops();
-        if (khoaDelete.isPresent() && lops.size() <= 0) {
+    public String Delete(String MaKhoa){
+
+        Khoa khoaDelete = khoaRepository.findById(MaKhoa).get();
+        List<Lop> lops = khoaDelete.getLops();
+        if ( lops.size() <= 0) {
             khoaRepository.deleteById(MaKhoa);
+            return "okee";
         }
         else {
             throw new RuntimeException("Không hợp lệ");

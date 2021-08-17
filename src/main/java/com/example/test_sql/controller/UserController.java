@@ -1,24 +1,17 @@
 package com.example.test_sql.controller;
 
 import com.example.test_sql.dto.RoleDTO;
-import com.example.test_sql.dto.SinhVienDTO;
 import com.example.test_sql.dto.UserDTO;
-import com.example.test_sql.model.SearchForm;
-import com.example.test_sql.model.User;
 import com.example.test_sql.service.RoleService;
 import com.example.test_sql.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -59,13 +52,13 @@ public class UserController {
     public @ResponseBody UserDTO getone(@PathVariable long id){
         return  userService.getone(id);
     }
+
     //@PreAuthorize("hasAuthority('create_user')")
     @RequestMapping(value = "/admin/user/post",method = RequestMethod.POST)
-    public @ResponseBody UserDTO postUser(@RequestBody UserDTO userDTO){
+    public ResponseEntity<UserDTO> postUser( @RequestBody UserDTO userDTO){
         userService.post(userDTO);
-        return userDTO;
+        return ResponseEntity.ok(userDTO);
     }
-
 
 
     @PutMapping("/admin/user/put/{id}")

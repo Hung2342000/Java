@@ -10,4 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 
 public interface LopRepository extends JpaRepository<Lop,String> {
+    @Query("select l from Lop l where l.TenLop like %?1%")
+    List<Lop> search(String search);
 }

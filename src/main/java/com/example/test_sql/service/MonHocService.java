@@ -34,7 +34,17 @@ public class MonHocService {
         return monHocDTOList;
     }
 
-    public MonHocDTO get(String MaMonhoc){
+    public List<MonHocDTO> List(){
+        List<Monhoc> monhocList = monHocRepository.findAll();
+        List<MonHocDTO> monHocDTOList = new ArrayList<>();
+        for (Monhoc monhoc : monhocList) {
+            MonHocDTO monHocDTO = monHocMapper.monHocDTO(monhoc);
+            monHocDTOList.add(monHocDTO);
+        }
+        return monHocDTOList;
+    }
+
+    public MonHocDTO getone(String MaMonhoc){
         Optional<Monhoc> monhoc = monHocRepository.findById(MaMonhoc);
         if(monhoc.isPresent()){
             MonHocDTO monHocDTO = monHocMapper.monHocDTO(monhoc.get());
@@ -44,7 +54,15 @@ public class MonHocService {
             throw new RuntimeException("Không tồn tại bản ghi " + MaMonhoc);
         }
     }
-
+    public List<MonHocDTO> search(String search){
+        List<Monhoc> monhocList = monHocRepository.search(search);
+        List<MonHocDTO> monHocDTOList = new ArrayList<>();
+        for (Monhoc monhoc : monhocList) {
+            MonHocDTO monHocDTO = monHocMapper.monHocDTO(monhoc);
+            monHocDTOList.add(monHocDTO);
+        }
+        return monHocDTOList;
+    }
     public MonHocDTO post(MonHocDTO monHocDTO){
         Optional<Monhoc> monhocPost = monHocRepository.findById(monHocDTO.getMaMonHoc());
         if(monhocPost.isPresent()){
@@ -57,8 +75,8 @@ public class MonHocService {
         }
     }
 
-    public MonHocDTO put(MonHocDTO monHocDTO){
-        Optional<Monhoc> monhocPut = monHocRepository.findById(monHocDTO.getMaMonHoc());
+    public MonHocDTO put(MonHocDTO monHocDTO,String mamonhoc){
+        Optional<Monhoc> monhocPut = monHocRepository.findById(mamonhoc);
         if (monhocPut.isPresent()){
             Monhoc monhoc = monHocMapper.monhoc(monHocDTO);
             monhocPut.get().setTenMonHoc(monhoc.getTenMonHoc());
