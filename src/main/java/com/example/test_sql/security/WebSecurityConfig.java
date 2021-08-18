@@ -35,11 +35,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.authorizeRequests().antMatchers("/home/**").permitAll();
 
-
-       // http.authorizeRequests().antMatchers(HttpMethod.GET,"/admin/user/index").hasAuthority("create_user");
-        //http.authorizeRequests().antMatchers("/admin/user?page=1").hasAuthority("create_user");
-        //http.authorizeRequests().antMatchers("/admin/user/**").hasAuthority("create_user");
-                //.hasAnyRole("ADMIN","MEMBER");
         http
                 .formLogin().loginPage("/login").permitAll()
                     .usernameParameter("username")

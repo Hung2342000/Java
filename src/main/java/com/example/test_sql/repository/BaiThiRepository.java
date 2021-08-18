@@ -9,5 +9,6 @@ import java.util.List;
 
 public interface BaiThiRepository extends JpaRepository<Baithi,Long> {
     @Query("select b from Baithi b where b.Diem=?1")
-    Baithi getCustomAll(Integer diem);
+    List<Baithi> searchdiem(Integer diem);
+
 }

@@ -19,7 +19,7 @@ public class MonHocControlller {
     @Autowired
     public MonHocService monHocService = new MonHocService();
 
-    //@PreAuthorize("hasAuthority('list_monhoc')")
+    @PreAuthorize("hasAuthority('list_monhoc')")
     @GetMapping("/list/{page}")
     public String getList(@PathVariable Integer page, Model model, @Param("search") String search){
         Integer p = page-1;
@@ -42,21 +42,21 @@ public class MonHocControlller {
         return monhoc;
     }
 
-    //@PreAuthorize("hasAuthority('create_monhoc')")
+    @PreAuthorize("hasAuthority('create_monhoc')")
     @PostMapping("/post")
     public @ResponseBody  MonHocDTO Post(@RequestBody MonHocDTO monhoc){
         monHocService.post(monhoc);
         return monhoc;
     }
 
-    //@PreAuthorize("hasAuthority('update_monhoc')")
+    @PreAuthorize("hasAuthority('update_monhoc')")
     @PutMapping("/put/{mamonhoc}")
     public @ResponseBody  MonHocDTO put(@RequestBody MonHocDTO monhoc,@PathVariable String mamonhoc){
         monHocService.put(monhoc,mamonhoc);
         return monHocService.put(monhoc,mamonhoc);
     }
 
-    //@PreAuthorize("hasAuthority('delete_monhoc')")
+    @PreAuthorize("hasAuthority('delete_monhoc')")
     @DeleteMapping("/delete/{mamonhoc}")
     public @ResponseBody String   delete(@PathVariable("mamonhoc") String ma){
         monHocService.delete(ma);

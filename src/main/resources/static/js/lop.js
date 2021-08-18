@@ -90,7 +90,7 @@ $(document).ready(function () {
     $(".editlop").click(function () {
         $("#modaleditlop").modal("show");
 
-        id = $(this).data("id");
+        id = $(this).val();
         console.log(id);
         $.ajax({
             type:"GET",
@@ -121,36 +121,35 @@ $(document).ready(function () {
                     success: function () {
                         location.reload();
                         console.log("hưng");
-                        $("#modaleditkhoa").modal("hide");
+                        $("#modaleditlop").modal("hide");
                     }
                 })
             }
         })
     })
-
     $(".deletelop").click(function () {
         $("#modaldeletelop").modal("show");
-
-        id = $(this).data("id");
+        id = $(this).val();
         console.log(id);
 
-        $("#delete").click(function (){
-
-            $.ajax({
-
-                url: "/admin/lop/delete/" + id,
-                type: "DELETE",
-
-                success: function (response){
-                    console.log(response);
-                    $("#"+id).remove();
-                    $("#modaldeletelop").modal("hide");
-                },
-                error: function (){
-                  alert("Không hợp lệ");
-                }
-            })
-
-        })
     });
+    $("#delete").click(function (){
+
+        $.ajax({
+
+            url: "/admin/lop/delete/" + id,
+            type: "DELETE",
+
+            success: function (response){
+                console.log(response);
+                $("#modaldeletelop").modal("hide");
+                $("#"+id).remove();
+
+            },
+            error: function (){
+                alert("Không hợp lệ");
+            }
+        })
+
+    })
 });

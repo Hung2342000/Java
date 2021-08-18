@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -43,17 +44,13 @@ public class UserController {
         return "admin/user/index.html";
     }
 
-
-    //@PreAuthorize("hasAuthority('create_user')")
-
-
-
+    @PreAuthorize("hasAuthority('create_update')")
     @GetMapping("/admin/user/get/{id}")
     public @ResponseBody UserDTO getone(@PathVariable long id){
         return  userService.getone(id);
     }
 
-    //@PreAuthorize("hasAuthority('create_user')")
+    @PreAuthorize("hasAuthority('create_user')")
     @RequestMapping(value = "/admin/user/post",method = RequestMethod.POST)
     public ResponseEntity<UserDTO> postUser( @RequestBody UserDTO userDTO){
         userService.post(userDTO);
@@ -67,7 +64,7 @@ public class UserController {
         return userDTO;
     }
 
-    //@PreAuthorize("hasAuthority('delete_user')")
+    @PreAuthorize("hasAuthority('delete_user')")
     @DeleteMapping ("/admin/user/delete/{id}")
     public @ResponseBody String delete(@PathVariable long id){
         return userService.delete(id);

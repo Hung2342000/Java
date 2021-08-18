@@ -4,44 +4,52 @@ $(document).ready(function () {
             mamonhoc: {
                 required : true,
             },
+
             tenmonhoc: {
-                required : true,
+                required: true,
+
             },
+
 
 
         },
         messages: {
+
             mamonhoc:{
-                required: "Mã không được bỏ trống"
+                required: "Mã môn học không được trống",
             },
-            tenmonhoc:{
-                required: "Bạn phải nhập tên"
+            tenmonhoc: {
+                required: "Tên môn học không được trống",
             },
+
 
         }
     });
     $("#edit_monhoc").validate({
         rules: {
             tenmonhocedit: {
-                required : true,
-            }
+                required: true,
+
+            },
+
 
         },
         messages: {
-            tenmonhocedit:{
-                required: "Bạn phải nhập tên"
-            }
+
+            tenmonhocedit: {
+                required: "Tên môn học không được trống",
+            },
+
         }
     });
     $("#btn_add_monhoc").click(function () {
         $('#modaladdmonhoc').modal('show');
 
         $("#sb").click(function (e) {
-            let tenmonhoc = $("#tenmonhoc").val();
-            let mamochoc = $("#mamonhoc").val();
+
             let data = {
-                "maMonHoc": mamochoc,
-                "tenMonHoc": tenmonhoc ,
+                "maMonHoc": $("#mamonhoc").val(),
+                "tenMonHoc": $("#tenmonhoc").val() ,
             };
             console.log(data);
             if($("#addformmonhoc").valid()) {
@@ -76,16 +84,17 @@ $(document).ready(function () {
             type:"GET",
             url : "/admin/monhoc/get/" + id,
             success: function (response){
+                console.log(response);
                 $("#tenmonhocedit").val(response.tenMonHoc);
             }
 
         });
 
         $("#edit").click(function (){
-            let tenmonhoc = $("#tenmonhocedit").val();
+
             let data = {
-                "tenMonHoc": tenmonhoc ,
-            };
+                "tenMonHoc": $("#tenmonhocedit").val() ,
+            }
             console.log(data);
             if($("#edit_monhoc").valid()) {
                 $.ajax({
@@ -110,23 +119,24 @@ $(document).ready(function () {
         id = $(this).data("id");
         console.log(id);
 
-        $("#delete").click(function (){
 
-            $.ajax({
+    });
+    $("#delete").click(function (){
 
-                url: "/admin/monhoc/delete/" + id,
-                type: "DELETE",
+        $.ajax({
 
-                success: function (response){
-                    console.log(response);
-                    $("#"+id).remove();
-                    $("#modaldeletemonhoc").modal("hide");
-                },
-                error: function (){
-                  alert("Không hợp lệ");
-                }
-            })
+            url: "/admin/monhoc/delete/" + id,
+            type: "DELETE",
 
+            success: function (response){
+                console.log(response);
+                $("#"+id).remove();
+                $("#modaldeletemonhoc").modal("hide");
+            },
+            error: function (){
+                alert("Không hợp lệ");
+            }
         })
+
     });
 });

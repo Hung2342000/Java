@@ -151,20 +151,21 @@ $(document).ready(function () {
         id = $(this).data("id");
         console.log(id);
 
-        $("#delete").click(function (){
 
-            $.ajax({
+    });
+    $("#delete").click(function (){
 
-                url: "/admin/user/delete/" + id,
-                type: "DELETE",
+        $.ajax({
 
-                success: function (response){
-                    console.log(response);
-                    $("#"+id).remove();
-                    $("#modaldeleteuser").modal("hide");
-                }
-            })
+            url: "/admin/user/delete/" + id,
+            type: "DELETE",
 
+            success: function (response){
+                console.log(response);
+                $("#"+id).remove();
+                $("#modaldeleteuser").modal("hide");
+            }
         })
+
     });
 });

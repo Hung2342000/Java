@@ -24,11 +24,11 @@ public class LopController {
     @Autowired
     public KhoaService khoaService;
 
-    //@PreAuthorize("hasAuthority('list_lop')")
+    @PreAuthorize("hasAuthority('list_lop')")
     @GetMapping("/list/{page}")
     public String getList(@PathVariable Integer page, Model model,@Param("search") String search){
         Integer p = page-1;
-        Pageable pageable = PageRequest.of(p,2);
+        Pageable pageable = PageRequest.of(p,5);
         Integer listpage = (lopService.List().size())/5 + 1;
         if(search != null){
             model.addAttribute("lop",lopService.search(search));
@@ -50,21 +50,21 @@ public class LopController {
         return lopDTO;
     }
 
-    //@PreAuthorize("hasAuthority('create_lop')")
+    @PreAuthorize("hasAuthority('create_lop')")
     @PostMapping("/post")
     public @ResponseBody LopDTO post(@RequestBody LopDTO lopDTO){
         lopService.post(lopDTO);
         return lopDTO;
     }
 
-    //@PreAuthorize("hasAuthority('update_lop')")
+    @PreAuthorize("hasAuthority('update_lop')")
     @PutMapping("/put/{malop}")
     public @ResponseBody LopDTO put(@RequestBody LopDTO lopDTO ,@PathVariable String malop){
         lopService.put(lopDTO,malop);
         return lopDTO;
     }
 
-    //@PreAuthorize("hasAuthority('delete_lop')")
+    @PreAuthorize("hasAuthority('delete_lop')")
     @DeleteMapping("delete/{malop}")
     public @ResponseBody String delete(@PathVariable("malop") String malop){
         lopService.delete(malop);

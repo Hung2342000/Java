@@ -100,7 +100,7 @@ public class LopService {
         List<Sinhvien> sinhviens = deletelop.get().getSinhviens();
 
         if ( sinhviens.size() <= 0) {
-            lopRepository.delete(deletelop.get());
+            lopRepository.deleteById(malop);
 
         } else {
             throw new RuntimeException("Không hợp lệ ");

@@ -94,10 +94,10 @@
             <td th:text="${lop.TenLop}"></td>
             <td th:text="${lop.TenKhoa}"></td>
             <td>
-              <button th:data-id="${lop.MaLop}"  class="editlop btn btn-primary">
+              <button th:value="${lop.MaLop}"  class="editlop btn btn-primary">
                 Edit
               </button>
-              <button  th:data-id="${lop.MaLop}"  class="deletelop btn btn-danger">Delete</button>
+              <button  th:value="${lop.MaLop}"  class="deletelop btn btn-danger">Delete</button>
             </td>
           </tr>
           </tbody>

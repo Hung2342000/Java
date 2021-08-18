@@ -26,7 +26,7 @@ public class RoleController {
     @Autowired
     AuthorityRepository authorityRepository;
 
-   // @PreAuthorize("hasAuthority('list_role')")
+    @PreAuthorize("hasAuthority('list_role')")
     @GetMapping("/list/{page}")
     public  String list(Model model, @PathVariable Integer page, @Param("search") String search){
         Integer p = page-1;
@@ -46,7 +46,7 @@ public class RoleController {
         return "admin/role/index.html";
     }
 
-    //@PreAuthorize("hasAuthority('create_role')")
+    @PreAuthorize("hasAuthority('create_role')")
     @RequestMapping(value = "/post",method = RequestMethod.POST)
     public @ResponseBody RoleDTO postU(@RequestBody RoleDTO roleDTO){
         roleService.post(roleDTO);
@@ -58,13 +58,14 @@ public class RoleController {
         return  roleService.getone(id);
     }
 
+    @PreAuthorize("hasAuthority('create_update')")
     @PutMapping("/put/{id}")
     public @ResponseBody RoleDTO putUser(@RequestBody RoleDTO roleDTO,@PathVariable long id){
         roleService.put(roleDTO,id);
         return roleDTO;
     }
 
-    //@PreAuthorize("hasAuthority('delete_role')")
+    @PreAuthorize("hasAuthority('delete_role')")
     @DeleteMapping("/delete/{id}")
     public @ResponseBody String delete(@PathVariable(value = "id") long id){
         roleService.delete(id);

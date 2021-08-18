@@ -160,21 +160,22 @@ $(document).ready(function () {
         id = $(this).data("id");
         console.log(id);
 
-        $("#delete").click(function (){
 
-            $.ajax({
+    });
+    $("#delete").click(function (){
 
-                url: "/admin/sinhvien/delete/" + id,
-                type: "DELETE",
-                success: function (response){
-                    $("#"+id).remove();
-                    $("#modaldeletesinhvien").modal("hide");
-                },
-                error: function (){
-                  alert("Không hợp lệ");
-                }
-            })
+        $.ajax({
 
+            url: "/admin/sinhvien/delete/" + id,
+            type: "DELETE",
+            success: function (response){
+                $("#"+id).remove();
+                $("#modaldeletesinhvien").modal("hide");
+            },
+            error: function (){
+                alert("Không hợp lệ");
+            }
         })
+
     });
 });

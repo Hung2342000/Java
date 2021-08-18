@@ -24,7 +24,8 @@ import java.util.Optional;
 public class KhoaController {
     @Autowired
     KhoaService khoaService ;
-    //@PreAuthorize("hasAuthority('list_khoa')")
+
+    @PreAuthorize("hasAuthority('list_khoa')")
     @RequestMapping(value = "/list/{page}",method = RequestMethod.GET)
     public String getlist(Model model, @PathVariable Integer page, @Param("search") String search){
         Pageable pageable = PageRequest.of(page-1,5);
@@ -41,7 +42,7 @@ public class KhoaController {
        return "/admin/khoa/index.html";
     };
 
-    //@PreAuthorize("hasAuthority('create_khoa')")
+    @PreAuthorize("hasAuthority('create_khoa')")
     @RequestMapping(value = "/post",method = RequestMethod.POST)
     public @ResponseBody KhoaDTO Post(@RequestBody KhoaDTO khoaDTO){
         khoaService.Post(khoaDTO);
@@ -55,7 +56,7 @@ public class KhoaController {
     }
 
 
-    //@PreAuthorize("hasAuthority('update_khoa')")
+    @PreAuthorize("hasAuthority('update_khoa')")
     @RequestMapping(value = "/put/{makhoa}",method = RequestMethod.PUT)
     public @ResponseBody KhoaDTO Put(@RequestBody KhoaDTO khoaDTO, @PathVariable String makhoa){
         khoaService.Put(khoaDTO,makhoa);

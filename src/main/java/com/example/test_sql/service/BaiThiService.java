@@ -31,8 +31,8 @@ public class BaiThiService {
     @Autowired
     MonHocRepository monHocRepository;
 
-    public List<BaiThiDTO> list(Pageable pageable){
-        List<Baithi> baithis = (List<Baithi>) baiThiRepository.findAll(pageable).getContent();
+    public List<BaiThiDTO> getlist(Pageable pageable){
+        List<Baithi> baithis =  baiThiRepository.findAll(pageable).getContent();
         List<BaiThiDTO> baiThiDTOList = new ArrayList<BaiThiDTO>();
         for (Baithi baithi: baithis) {
             BaiThiDTO baiThiDTO = baiThiMapper.baiThiDTO(baithi);
@@ -42,58 +42,59 @@ public class BaiThiService {
         return baiThiDTOList;
     }
 
-    public Long a(Integer diem){
-        return baiThiRepository.getCustomAll(diem).getMaBaiThi();
-    }
-    public BaiThiDTO get(Long mabaithi){
-        Optional<Baithi> baithi = baiThiRepository.findById(mabaithi);
-        BaiThiDTO baiThiDTO = baiThiMapper.baiThiDTO(baithi.get());
-        return baiThiDTO;
+    public List<BaiThiDTO> List(){
+        List<Baithi> baithis =  baiThiRepository.findAll();
+        List<BaiThiDTO> baiThiDTOList = new ArrayList<BaiThiDTO>();
+        for (Baithi baithi: baithis) {
+            BaiThiDTO baiThiDTO = baiThiMapper.baiThiDTO(baithi);
+            baiThiDTOList.add(baiThiDTO);
 
+        }
+        return baiThiDTOList;
     }
+    public List<BaiThiDTO> search(Integer diem){
+        List<Baithi> baithis =  baiThiRepository.searchdiem(diem);
+        List<BaiThiDTO> baiThiDTOList = new ArrayList<BaiThiDTO>();
+        for (Baithi baithi: baithis) {
+            BaiThiDTO baiThiDTO = baiThiMapper.baiThiDTO(baithi);
+            baiThiDTOList.add(baiThiDTO);
+
+        }
+        return baiThiDTOList;
+    }
+
+    public BaiThiDTO getone(Long mabaithi){
+        return baiThiMapper.baiThiDTO(baiThiRepository.findById(mabaithi).get());
+    }
+
+
 
     public BaiThiDTO  post(BaiThiDTO baiThiDTO){
-        Optional<Baithi> baithi = baiThiRepository.findById(baiThiDTO.getMaBaiThi());
-        if (baithi.isPresent()) {
-            throw new RuntimeException("Đã tồn tại bản ghi");
-        }
-        else {
             Optional<Sinhvien> sinhvien = sinhVienRepository.findById(baiThiDTO.getMaSinhVien());
             Optional<Monhoc> monhoc = monHocRepository.findById(baiThiDTO.getMaMonHoc());
-            Baithi baithi1 = baiThiMapper.baithi(baiThiDTO);
+            Baithi baithi1 = new Baithi();
+            baithi1.setDiem(baiThiDTO.getDiem());
             baithi1.setMaMonHoc(monhoc.get());
             baithi1.setMaSinhVien(sinhvien.get());
             baiThiRepository.save(baithi1);
             return baiThiDTO;
-        }
     }
 
-    public BaiThiDTO put(BaiThiDTO baiThiDTO){
-        Optional<Baithi> baithi = baiThiRepository.findById(baiThiDTO.getMaBaiThi());
-        if(baithi.isPresent()){
-            Optional<Sinhvien> sinhvien = sinhVienRepository.findById(baiThiDTO.getMaSinhVien());
-            Optional<Monhoc> monhoc = monHocRepository.findById(baiThiDTO.getMaMonHoc());
-            Baithi baithiput = baiThiMapper.baithi(baiThiDTO);
-            baithiput.setMaSinhVien(sinhvien.get());
-            baithiput.setMaMonHoc(monhoc.get());
-            baithi.get().setDiem(baithiput.getDiem());
-            baithi.get().setMaMonHoc(baithiput.getMaMonHoc());
-            baithi.get().setMaSinhVien(baithiput.getMaSinhVien());
-            baiThiRepository.save(baithi.get());
-            return baiThiDTO;
-        }
-        else {
-            throw new RuntimeException("Không tồn tại bản ghi");
-        }
+    public BaiThiDTO put(BaiThiDTO baiThiDTO,Long mabaithi){
+        Optional<Baithi> baithi = baiThiRepository.findById(mabaithi);
+        Optional<Sinhvien> sinhvien = sinhVienRepository.findById(baiThiDTO.getMaSinhVien());
+        Optional<Monhoc> monhoc = monHocRepository.findById(baiThiDTO.getMaMonHoc());
+        Baithi baithiput = baiThiMapper.baithi(baiThiDTO);
+        baithiput.setMaSinhVien(sinhvien.get());
+        baithiput.setMaMonHoc(monhoc.get());
+        baithi.get().setDiem(baithiput.getDiem());
+        baithi.get().setMaMonHoc(baithiput.getMaMonHoc());
+        baithi.get().setMaSinhVien(baithiput.getMaSinhVien());
+        baiThiRepository.save(baithi.get());
+        return baiThiDTO;
     }
 
     public void delete(Long mabaithi){
-        Optional<Baithi> baithi = baiThiRepository.findById(mabaithi);
-        if(baithi.isPresent()){
-            baiThiRepository.delete(baithi.get());
-        }
-        else {
-            throw new RuntimeException("Không tồn tại bản ghi");
-        }
+            baiThiRepository.deleteById(mabaithi);
     }
 }

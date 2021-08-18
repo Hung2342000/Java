@@ -91,7 +91,7 @@ public class SinhVienService {
             sinhvienpost.setMaLop(lop.get());
             String filename = sinhVienDTO.getMultipartFile().getOriginalFilename();
             try{
-                FileCopyUtils.copy(sinhVienDTO.getMultipartFile().getBytes(),new File("D:\\QuanLySinhVien\\src\\main\\resources\\static\\image\\" +filename));
+                FileCopyUtils.copy(sinhVienDTO.getMultipartFile().getBytes(),new File("D:\\Quanlysinhvien\\src\\main\\resources\\static\\image\\" +filename));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -109,7 +109,7 @@ public class SinhVienService {
         sinhvienput.get().setDiaChi(sinhVienDTO.getDiaChi());
         String filename = sinhVienDTO.getMultipartFile().getOriginalFilename();
         try{
-            FileCopyUtils.copy(sinhVienDTO.getMultipartFile().getBytes(),new File("D:\\QuanLySinhVien\\src\\main\\resources\\static\\image\\" +filename));
+            FileCopyUtils.copy(sinhVienDTO.getMultipartFile().getBytes(),new File("D:\\Quanlysinhvien\\src\\main\\resources\\static\\image\\" +filename));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -123,7 +123,7 @@ public class SinhVienService {
         Optional<Sinhvien> sinhvien = sinhVienRepository.findById(masinhvien);
         List<Baithi> baithis = sinhvien.get().getBaithis();
         String filename = sinhvien.get().getImage();
-        File file = new File("D:\\QuanLySinhVien\\src\\main\\resources\\static\\image\\" +filename);
+        File file = new File("D:\\Quanlysinhvien\\src\\main\\resources\\static\\image\\" +filename);
         if ( baithis.size()<=0){
             file.delete();
             sinhVienRepository.delete(sinhvien.get());

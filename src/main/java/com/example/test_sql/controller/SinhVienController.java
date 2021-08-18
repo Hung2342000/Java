@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class SinhVienController {
     @Autowired
     LopService lopService;
 
-    //@PreAuthorize("hasAuthority('list_sinhvien')")
+    @PreAuthorize("hasAuthority('list_sinhvien')")
     @GetMapping("/list/{page}")
     public String list(@Param("search") String search, @PathVariable Integer page,Model model){
         Integer p = page-1;
@@ -45,7 +46,7 @@ public class SinhVienController {
         return "/admin/sinhvien/index.html";
     }
 
-    //@PreAuthorize("hasAuthority('create_sinhvien')")
+    @PreAuthorize("hasAuthority('create_sinhvien')")
     @PostMapping("/post")
     public @ResponseBody String post(@ModelAttribute SinhVienDTO sinhVienDTO){
         sinhVienService.post(sinhVienDTO);
@@ -54,7 +55,7 @@ public class SinhVienController {
 
 
 
-    //@PreAuthorize("hasAuthority('update_sinhvien')")
+    @PreAuthorize("hasAuthority('update_sinhvien')")
     @GetMapping("/get/{masinhvien}")
     public @ResponseBody SinhVienDTO getone(@PathVariable String masinhvien ) {
         SinhVienDTO sinhVienDTO = sinhVienService.getone(masinhvien);
@@ -69,7 +70,7 @@ public class SinhVienController {
          return "okee";
     }
 
-   // @PreAuthorize("hasAuthority('delete_sinhvien')")
+    @PreAuthorize("hasAuthority('delete_sinhvien')")
     @DeleteMapping ({"/delete/{masinhvien}"})
     public @ResponseBody String delete(@PathVariable String masinhvien){
         sinhVienService.delete(masinhvien);

@@ -132,23 +132,24 @@ $(document).ready(function () {
         id = $(this).data("id");
         console.log(id);
 
-        $("#delete").click(function (){
 
-            $.ajax({
+    });
+    $("#delete").click(function (){
 
-                url: "/admin/role/delete/" + id,
-                type: "DELETE",
+        $.ajax({
 
-                success: function (response){
-                    console.log(response);
-                    $("#"+id).remove();
-                    $("#modaldeleterole").modal("hide");
-                },
-                error: function (){
-                  alert("Không hợp lệ");
-                }
-            })
+            url: "/admin/role/delete/" + id,
+            type: "DELETE",
 
+            success: function (response){
+                console.log(response);
+                $("#"+id).remove();
+                $("#modaldeleterole").modal("hide");
+            },
+            error: function (){
+                alert("Không hợp lệ");
+            }
         })
+
     });
 });
